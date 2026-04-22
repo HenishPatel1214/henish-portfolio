@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
 const DEFAULT_TWEAKS = {
-  speed: 0.055,
-  contourCount: 12,
-  cellSize: 34,
-  noiseScale: 0.0085,
-  warp: 0.34,
-  lineWidth: 0.58,
-  glow: 3.8,
-  accentEvery: 4,
-  baseAlpha: 0.12,
-  accentAlpha: 0.28,
+  speed: 0.086,
+  contourCount: 16,
+  cellSize: 28,
+  noiseScale: 0.0092,
+  warp: 0.41,
+  lineWidth: 0.56,
+  glow: 4.6,
+  accentEvery: 3,
+  baseAlpha: 0.17,
+  accentAlpha: 0.36,
 }
 
 function clamp(value, min, max) {
@@ -142,7 +142,7 @@ export default function TechyBackground() {
     }
 
     const noise = new PerlinNoise2D(114735)
-    const baseColor = [116, 130, 122]
+    const baseColor = [78, 148, 114]
     const accentColor = [0, 255, 136]
     const levelMin = -0.82
     const levelMax = 0.82
@@ -429,7 +429,7 @@ export default function TechyBackground() {
             <input
               type="range"
               min="0.02"
-              max="0.12"
+              max="0.16"
               step="0.005"
               value={tweaks.speed}
               onChange={(event) => updateTweak('speed', Number(event.target.value))}
@@ -441,7 +441,7 @@ export default function TechyBackground() {
             <input
               type="range"
               min="8"
-              max="18"
+              max="22"
               step="1"
               value={tweaks.contourCount}
               onChange={(event) => updateTweak('contourCount', Number(event.target.value))}

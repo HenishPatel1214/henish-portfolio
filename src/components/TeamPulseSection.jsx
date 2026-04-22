@@ -9,28 +9,28 @@ const TEAM_ENDPOINTS = [
     displayName: 'New York Knicks',
     league: 'NBA',
     endpoint: 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/18',
-    accent: 'from-[#1d428a]/35 via-[#f58426]/20 to-transparent',
+    accent: 'from-[#0d5a3d]/35 via-[#34b978]/18 to-transparent',
   },
   {
     key: 'real-madrid',
     displayName: 'Real Madrid',
     league: 'LALIGA',
     endpoint: 'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86',
-    accent: 'from-[#5f7bff]/24 via-[#9f72ff]/16 to-transparent',
+    accent: 'from-[#1b5a3e]/30 via-[#51d392]/16 to-transparent',
   },
   {
     key: 'chelsea',
     displayName: 'Chelsea',
     league: 'Premier League',
     endpoint: 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/363',
-    accent: 'from-[#034694]/35 via-blue-400/20 to-transparent',
+    accent: 'from-[#1f734c]/35 via-[#34b978]/20 to-transparent',
   },
   {
     key: 'giants',
     displayName: 'New York Giants',
     league: 'NFL',
     endpoint: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/19',
-    accent: 'from-[#0b2265]/35 via-[#a71930]/22 to-transparent',
+    accent: 'from-[#174a34]/35 via-[#27935f]/18 to-transparent',
   },
 ]
 
@@ -81,23 +81,23 @@ function normalizeTeamPayload(payload) {
 
 function TeamCard({ card }) {
   return (
-    <article className="relative overflow-hidden rounded-2xl border border-[#5667c7]/55 bg-[#121a46] p-6 shadow-soft">
+    <article className="relative overflow-hidden rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft">
       <div className={`absolute inset-0 bg-gradient-to-br ${card.accent}`} />
       <div className="relative">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-brand-100/85">{card.league}</p>
-            <h3 className="mt-3 font-display text-xl font-semibold text-indigo-50">{card.displayName}</h3>
+            <h3 className="mt-3 font-display text-xl font-semibold text-brand-50">{card.displayName}</h3>
           </div>
-          <span className="rounded-full border border-[#6276d6]/55 bg-[#0f173f] px-3 py-1 text-xs text-indigo-100">
+          <span className="rounded-full border border-[#24936d]/55 bg-[#081a14] px-3 py-1 text-xs text-brand-100">
             {card.recordSummary}
           </span>
         </div>
 
-        <p className="mt-4 text-sm text-indigo-200/90">{card.standing}</p>
-        <p className="mt-4 text-sm font-semibold text-indigo-50">{card.matchLabel}</p>
-        <p className="mt-1 text-xs text-indigo-200/90">{card.eventDate} · {card.status}</p>
-        <p className="mt-3 rounded-xl border border-[#5667c7]/55 bg-[#0f173f] px-3 py-2 text-xs text-indigo-100">
+        <p className="mt-4 text-sm text-brand-200/90">{card.standing}</p>
+        <p className="mt-4 text-sm font-semibold text-brand-50">{card.matchLabel}</p>
+        <p className="mt-1 text-xs text-brand-200/90">{card.eventDate} · {card.status}</p>
+        <p className="mt-3 rounded-xl border border-[#1f7a59]/55 bg-[#081a14] px-3 py-2 text-xs text-brand-100">
           {card.scoreSummary}
         </p>
       </div>
@@ -189,7 +189,7 @@ export default function TeamPulseSection({ musicProfile }) {
         ))}
       </div>
 
-      <p className="mt-5 text-xs text-indigo-300/80">
+      <p className="mt-5 text-xs text-brand-300/80">
         {loading ? 'Loading live team data...' : `Last updated: ${lastUpdated?.toLocaleTimeString() ?? 'just now'}`}
       </p>
     </AnimatedSection>

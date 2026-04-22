@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  @apply m-0 font-body text-indigo-50 antialiased;
+  @apply m-0 font-body text-brand-50 antialiased;
   background-color: #050505;
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 ::selection {
-  @apply text-indigo-50;
+  @apply text-brand-50;
   background-color: rgba(0, 255, 136, 0.28);
 }
 

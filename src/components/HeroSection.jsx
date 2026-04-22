@@ -5,11 +5,11 @@ function StatCard({ value, label, context }) {
     <Motion.article
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      className="group rounded-2xl border border-[#5667c7]/55 bg-[#1a255d] p-5 shadow-soft backdrop-blur"
+      className="group rounded-2xl border border-[#1f7a59]/55 bg-[#0f2a20] p-5 shadow-soft backdrop-blur"
     >
       <p className="font-display text-2xl font-semibold text-brand-100">{value}</p>
-      <p className="mt-1 text-sm font-semibold text-indigo-50">{label}</p>
-      <p className="mt-2 text-xs leading-relaxed text-indigo-300/80 group-hover:text-indigo-200/90">{context}</p>
+      <p className="mt-1 text-sm font-semibold text-brand-50">{label}</p>
+      <p className="mt-2 text-xs leading-relaxed text-brand-300/80 group-hover:text-brand-200/90">{context}</p>
     </Motion.article>
   )
 }
@@ -32,7 +32,7 @@ export default function HeroSection({ personalInfo, quickStats }) {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 font-display text-4xl font-bold leading-[1.05] text-indigo-50 md:text-6xl"
+            className="mt-6 font-display text-4xl font-bold leading-[1.05] text-brand-50 md:text-6xl"
           >
             {personalInfo.name}
           </Motion.h1>
@@ -50,7 +50,7 @@ export default function HeroSection({ personalInfo, quickStats }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 max-w-2xl text-base leading-relaxed text-indigo-200/90 md:text-lg"
+            className="mt-6 max-w-2xl text-base leading-relaxed text-brand-200/90 md:text-lg"
           >
             {personalInfo.tagline}
           </Motion.p>
@@ -63,19 +63,19 @@ export default function HeroSection({ personalInfo, quickStats }) {
           >
             <a
               href="#projects"
-              className="inline-flex items-center rounded-full bg-brand-300 px-6 py-3 text-sm font-semibold text-[#0b1338] transition hover:bg-brand-200"
+              className="inline-flex items-center rounded-full bg-brand-300 px-6 py-3 text-sm font-semibold text-[#042518] transition hover:bg-brand-200"
             >
               Explore Projects
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center rounded-full border border-[#7a8be2]/55 px-6 py-3 text-sm font-semibold text-indigo-50 transition hover:border-brand-300/80 hover:text-indigo-50"
+              className="inline-flex items-center rounded-full border border-[#33a77e]/55 px-6 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80 hover:text-brand-50"
             >
               Contact Me
             </a>
           </Motion.div>
 
-          <p className="mt-8 text-sm text-indigo-300/80">{personalInfo.education}</p>
+          <p className="mt-8 text-sm text-brand-300/80">{personalInfo.education}</p>
         </div>
 
         <div className="grid gap-5">

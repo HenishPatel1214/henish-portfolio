@@ -4,18 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        page: '#050812',
+        page: '#040905',
         brand: {
-          50: '#eef4ff',
-          100: '#dbe8ff',
-          200: '#bed3f0',
-          300: '#98b4d5',
-          400: '#7898bb',
-          500: '#607fa2',
-          600: '#4e6886',
-          700: '#3f536c',
-          800: '#33465b',
-          900: '#2a394a',
+          50: '#f1fff7',
+          100: '#d6fbe5',
+          200: '#b0f3d0',
+          300: '#7fe7b0',
+          400: '#51d392',
+          500: '#34b978',
+          600: '#27935f',
+          700: '#1f734c',
+          800: '#1b5a3e',
+          900: '#174a34',
         },
       },
       fontFamily: {
@@ -23,7 +23,7 @@ export default {
         body: ['Manrope', 'sans-serif'],
       },
       boxShadow: {
-        soft: '0 24px 48px -24px rgba(7, 12, 40, 0.86), 0 8px 24px -18px rgba(16, 22, 58, 0.92)',
+        soft: '0 24px 48px -24px rgba(3, 12, 8, 0.86), 0 8px 24px -18px rgba(4, 18, 11, 0.92)',
       },
     },
   },
