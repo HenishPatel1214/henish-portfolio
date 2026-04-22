@@ -12,16 +12,19 @@ export const personalInfo = {
 
 export const headshots = [
   {
-    src: 'profile/henish-avatar.jpg',
-    alt: 'Henish Patel portrait',
+    src: 'profile/henish-suit.jpeg',
+    alt: 'Henish Patel in a suit',
+    position: '50% 20%',
   },
   {
-    src: 'profile/henish-portrait-2.jpg',
-    alt: 'Henish Patel professional headshot',
+    src: 'profile/henish-nyc.jpeg',
+    alt: 'Henish Patel with NYC skyline at night',
+    position: '50% 18%',
   },
   {
-    src: 'profile/henish-portrait-3.jpg',
-    alt: 'Henish Patel profile photo',
+    src: 'profile/henish-selfie.jpeg',
+    alt: 'Henish Patel portrait selfie',
+    position: '50% 26%',
   },
 ]
 

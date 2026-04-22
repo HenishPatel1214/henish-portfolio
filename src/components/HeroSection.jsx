@@ -48,6 +48,7 @@ function PortraitCluster({ headshots }) {
           src={toSrc(mainPhoto)}
           alt={mainPhoto?.alt ?? 'Henish Patel portrait'}
           className="h-full w-full object-cover"
+          style={mainPhoto?.position ? { objectPosition: mainPhoto.position } : undefined}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#051225]/75 via-transparent to-transparent" />
         <figcaption className="absolute bottom-4 left-4 right-4 rounded-xl border border-white/10 bg-black/35 px-3 py-2 text-xs text-slate-100 backdrop-blur-md">
@@ -64,6 +65,7 @@ function PortraitCluster({ headshots }) {
           src={toSrc(secondPhoto)}
           alt={secondPhoto?.alt ?? 'Henish Patel profile image'}
           className="h-full w-full object-cover grayscale-[0.15]"
+          style={secondPhoto?.position ? { objectPosition: secondPhoto.position } : undefined}
         />
       </Motion.figure>
 
@@ -76,6 +78,7 @@ function PortraitCluster({ headshots }) {
           src={toSrc(thirdPhoto)}
           alt={thirdPhoto?.alt ?? 'Henish Patel headshot'}
           className="h-full w-full object-cover saturate-[1.05]"
+          style={thirdPhoto?.position ? { objectPosition: thirdPhoto.position } : undefined}
         />
       </Motion.figure>
     </Motion.div>
