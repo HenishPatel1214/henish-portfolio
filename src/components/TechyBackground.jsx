@@ -1,41 +1,52 @@
 import { motion as Motion, useTransform } from 'framer-motion'
 
-const wavePaths = [
-  'M0 118 C 110 92, 220 152, 330 126 C 440 100, 550 52, 660 70 C 770 88, 880 148, 990 130 C 1100 112, 1210 66, 1320 84 C 1430 102, 1540 160, 1650 136 C 1760 112, 1870 76, 1980 90',
-  'M0 142 C 120 116, 240 172, 360 146 C 480 120, 600 66, 720 88 C 840 110, 960 170, 1080 152 C 1200 134, 1320 82, 1440 104 C 1560 126, 1680 186, 1800 166 C 1920 146, 2040 96, 2160 118',
-  'M0 96 C 130 70, 260 130, 390 104 C 520 78, 650 36, 780 58 C 910 80, 1040 138, 1170 116 C 1300 94, 1430 50, 1560 70 C 1690 90, 1820 146, 1950 124 C 2080 102, 2210 64, 2340 82',
+const primaryStripePaths = [
+  'M -260 52 C 120 -18 330 190 720 136 C 1010 96 1320 16 1710 92 C 2010 150 2280 96 2580 72',
+  'M -260 118 C 160 40 360 232 780 176 C 1080 136 1360 52 1740 120 C 2040 172 2320 124 2600 98',
 ]
 
+const secondaryStripePaths = [
+  'M -260 166 C 120 86 360 302 760 242 C 1040 200 1360 130 1720 186 C 2010 230 2330 192 2620 150',
+  'M -260 224 C 150 142 390 352 830 292 C 1120 254 1450 178 1820 240 C 2100 286 2360 250 2640 210',
+]
+
+function renderPaths(paths, keyPrefix) {
+  return paths.map((path, index) => <path key={`${keyPrefix}-${index}`} d={path} />)
+}
+
 export default function TechyBackground({ scrollYProgress }) {
-  const orbDrift = useTransform(scrollYProgress, [0, 1], [0, 110])
-  const orbReverse = useTransform(scrollYProgress, [0, 1], [0, -95])
-  const ribbonX = useTransform(scrollYProgress, [0, 1], [0, -180])
-  const ribbonXReverse = useTransform(scrollYProgress, [0, 1], [0, 140])
+  const stripeParallaxY = useTransform(scrollYProgress, [0, 1], [0, 90])
+  const stripeParallaxYReverse = useTransform(scrollYProgress, [0, 1], [0, -70])
+  const stripeParallaxX = useTransform(scrollYProgress, [0, 1], [0, -120])
+  const stripeParallaxXReverse = useTransform(scrollYProgress, [0, 1], [0, 90])
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-tech-base" />
+      <div className="absolute inset-0 bg-specsheet-base" />
 
-      <Motion.div className="absolute left-[-20%] top-[-15%] h-[36rem] w-[36rem] tech-orb tech-orb-primary" style={{ y: orbDrift }} />
-      <Motion.div className="absolute right-[-18%] top-[15%] h-[32rem] w-[32rem] tech-orb tech-orb-secondary" style={{ y: orbReverse }} />
+      <Motion.svg
+        viewBox="0 0 2400 360"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+        className="spec-stripe spec-stripe-a"
+        style={{ x: stripeParallaxX, y: stripeParallaxY }}
+      >
+        {renderPaths(primaryStripePaths, 'primary')}
+      </Motion.svg>
 
-      <Motion.div className="tech-ribbon tech-ribbon-a" style={{ x: ribbonX }} />
-      <Motion.div className="tech-ribbon tech-ribbon-b" style={{ x: ribbonXReverse }} />
+      <Motion.svg
+        viewBox="0 0 2400 380"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+        className="spec-stripe spec-stripe-b"
+        style={{ x: stripeParallaxXReverse, y: stripeParallaxYReverse }}
+      >
+        {renderPaths(secondaryStripePaths, 'secondary')}
+      </Motion.svg>
 
-      <svg viewBox="0 0 2400 260" aria-hidden="true" className="tech-wave-layer tech-wave-layer-a" preserveAspectRatio="none">
-        {wavePaths.map((path) => (
-          <path key={`${path}-a`} d={path} />
-        ))}
-      </svg>
-      <svg viewBox="0 0 2400 260" aria-hidden="true" className="tech-wave-layer tech-wave-layer-b" preserveAspectRatio="none">
-        {wavePaths.map((path) => (
-          <path key={`${path}-b`} d={path} />
-        ))}
-      </svg>
-
-      <div className="absolute inset-0 tech-flow-grid" />
-      <div className="absolute inset-0 bg-grid-mask opacity-45" />
-      <div className="absolute inset-0 tech-vignette" />
+      <div className="absolute inset-0 spec-dots-global" />
+      <div className="absolute inset-0 spec-dots-focus" />
+      <div className="absolute inset-0 spec-vignette" />
     </div>
   )
 }
