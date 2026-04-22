@@ -175,7 +175,7 @@ export default function TeamPulseSection() {
       <SectionTitle
         eyebrow="Team Pulse"
         title="Live updates from my favorite teams."
-        description="Auto-refreshing snapshots for the New York Knicks, Real Madrid, and Chelsea. This section updates every 5 minutes."
+        description="Auto-refreshing snapshots for the New York Knicks, New York Giants, Real Madrid, and Chelsea. This section updates every 5 minutes."
       />
 
       <div className="mt-10 grid gap-4 md:grid-cols-3">
