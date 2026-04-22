@@ -6,12 +6,12 @@ import { useEffect, useRef } from 'react'
 */
 const TOPO_CONFIG = {
   speed: 1, // 0..200
-  density: 6, // 6..36
-  scale: 260, // 40..260 (pixels)
-  glow: 38, // 0..30 (can exceed for slightly stronger glow)
-  lineWidth: 32, // 20..180 (x0.01 => 0.32px default)
+  density: 12, // 6..36
+  scale: 230, // 40..260 (pixels)
+  glow: 48, // 0..30 (can exceed for slightly stronger glow)
+  lineWidth: 46, // 20..180 (x0.01 => 0.46px default)
   mouseWarp: 15, // 0..100
-  palette: 'white', // white | green | cyan | amber | magenta
+  palette: 'green', // white | green | cyan | amber | magenta
   cellSize: 12,
   background: '#050505',
 }
@@ -21,36 +21,36 @@ const PALETTES = {
     base: [230, 230, 230],
     accent: [255, 255, 255],
     glow: [255, 255, 255],
-    baseAlpha: 0.16,
-    accentAlpha: 0.32,
+    baseAlpha: 0.24,
+    accentAlpha: 0.52,
   },
   green: {
     base: [100, 236, 172],
     accent: [140, 255, 200],
     glow: [86, 255, 180],
-    baseAlpha: 0.15,
-    accentAlpha: 0.34,
+    baseAlpha: 0.22,
+    accentAlpha: 0.5,
   },
   cyan: {
     base: [120, 220, 255],
     accent: [170, 244, 255],
     glow: [100, 228, 255],
-    baseAlpha: 0.15,
-    accentAlpha: 0.34,
+    baseAlpha: 0.21,
+    accentAlpha: 0.48,
   },
   amber: {
     base: [255, 204, 140],
     accent: [255, 227, 172],
     glow: [255, 196, 118],
-    baseAlpha: 0.16,
-    accentAlpha: 0.33,
+    baseAlpha: 0.22,
+    accentAlpha: 0.5,
   },
   magenta: {
     base: [240, 170, 255],
     accent: [250, 205, 255],
     glow: [232, 150, 255],
-    baseAlpha: 0.15,
-    accentAlpha: 0.34,
+    baseAlpha: 0.21,
+    accentAlpha: 0.48,
   },
 }
 
@@ -410,14 +410,14 @@ export default function TechyBackground() {
       const step = (hi - lo) / Math.max(1, levels - 1)
 
       const baseLineWidth = Math.max(0.05, config.lineWidth * 0.01)
-      const pulse = 0.93 + 0.07 * Math.sin(time * 0.85)
+      const pulse = 0.9 + 0.1 * Math.sin(time * 0.85)
 
       context.lineCap = 'round'
       context.lineJoin = 'round'
 
       for (let i = 0; i < levels; i += 1) {
         const iso = lo + step * i
-        const isIndexLine = i % 6 === 0
+        const isIndexLine = i % 4 === 0
 
         const alpha = (isIndexLine ? palette.accentAlpha : palette.baseAlpha) * pulse
         const color = isIndexLine ? palette.accent : palette.base
@@ -427,7 +427,7 @@ export default function TechyBackground() {
 
         const glowRadius = config.glow * 0.27
         context.shadowBlur = isIndexLine ? glowRadius * 1.12 : glowRadius * 0.46
-        context.shadowColor = toRgba(palette.glow, isIndexLine ? 0.3 : 0.14)
+        context.shadowColor = toRgba(palette.glow, isIndexLine ? 0.38 : 0.2)
 
         traceIsoLevel(iso)
       }
