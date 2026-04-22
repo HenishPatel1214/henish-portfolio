@@ -24,13 +24,13 @@ body {
   @apply bg-brand-400/40 text-indigo-50;
 }
 
-@keyframes waveDriftA {
+@keyframes topoDriftA {
   0% {
     transform: translate3d(0, 0, 0);
   }
 
   50% {
-    transform: translate3d(-3.8%, 2.4%, 0);
+    transform: translate3d(-2.2%, 1.6%, 0);
   }
 
   100% {
@@ -38,13 +38,13 @@ body {
   }
 }
 
-@keyframes waveDriftB {
+@keyframes topoDriftB {
   0% {
     transform: translate3d(0, 0, 0);
   }
 
   50% {
-    transform: translate3d(3.4%, -2%, 0);
+    transform: translate3d(2%, -1.4%, 0);
   }
 
   100% {
@@ -63,45 +63,46 @@ body {
 }
 
 @layer utilities {
-  .ln-wave-base {
+  .ln-topo-base {
     background:
-      radial-gradient(130% 140% at 10% -10%, rgba(59, 70, 89, 0.28), transparent 48%),
-      radial-gradient(130% 120% at 90% 8%, rgba(74, 86, 106, 0.2), transparent 52%),
-      linear-gradient(176deg, #060b16 0%, #0a101d 50%, #0b1220 100%);
+      radial-gradient(120% 90% at 15% 10%, rgba(14, 116, 144, 0.28), transparent 55%),
+      radial-gradient(120% 90% at 85% 20%, rgba(56, 189, 248, 0.14), transparent 55%),
+      radial-gradient(140% 110% at 50% 110%, rgba(8, 47, 73, 0.7), transparent 60%),
+      linear-gradient(176deg, #04091a 0%, #061229 50%, #04112a 100%);
   }
 
-  .ln-wave-svg {
+  .ln-topo-svg {
     position: absolute;
-    left: -28%;
-    top: -24%;
-    width: 172%;
-    height: 160%;
+    left: -6%;
+    top: -6%;
+    width: 112%;
+    height: 112%;
   }
 
-  .ln-wave-fill-a {
+  .ln-topo-far {
+    opacity: 0.75;
+    animation: topoDriftA 60s ease-in-out infinite;
+  }
+
+  .ln-topo-mid {
     opacity: 0.9;
-    animation: waveDriftA 34s ease-in-out infinite;
+    animation: topoDriftB 48s ease-in-out infinite;
   }
 
-  .ln-wave-fill-b {
-    opacity: 0.8;
-    animation: waveDriftB 42s ease-in-out infinite;
+  .ln-topo-near {
+    opacity: 1;
+    animation: topoDriftA 36s ease-in-out infinite;
   }
 
-  .ln-wave-lines {
-    opacity: 0.68;
-    animation: waveDriftA 48s ease-in-out infinite;
-  }
-
-  .ln-wave-grain {
-    background-image: radial-gradient(circle, rgba(204, 211, 221, 0.12) 0.6px, transparent 0.6px);
+  .ln-topo-grain {
+    background-image: radial-gradient(circle, rgba(186, 230, 253, 0.1) 0.6px, transparent 0.6px);
     background-size: 3.2px 3.2px;
-    opacity: 0.14;
+    opacity: 0.16;
     mix-blend-mode: soft-light;
     animation: grainShift 16s linear infinite;
   }
 
-  .ln-wave-vignette {
-    background: radial-gradient(circle at center, transparent 34%, rgba(3, 7, 14, 0.82) 100%);
+  .ln-topo-vignette {
+    background: radial-gradient(circle at center, transparent 40%, rgba(2, 6, 18, 0.82) 100%);
   }
 }
