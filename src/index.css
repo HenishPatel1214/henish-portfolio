@@ -26,29 +26,55 @@ body {
 
 @keyframes topoDriftA {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate3d(-5%, 3.2%, 0) rotate(0.4deg);
   }
 
   50% {
-    transform: translate3d(-2.2%, 1.6%, 0);
+    transform: translate3d(-6.5%, 5.5%, 0) rotate(0.8deg);
+  }
+
+  75% {
+    transform: translate3d(-3%, 2%, 0) rotate(0.3deg);
   }
 
   100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
 }
 
 @keyframes topoDriftB {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate3d(4.5%, -2.6%, 0) rotate(-0.4deg);
   }
 
   50% {
-    transform: translate3d(2%, -1.4%, 0);
+    transform: translate3d(6.2%, -4.8%, 0) rotate(-0.7deg);
+  }
+
+  75% {
+    transform: translate3d(3.2%, -2%, 0) rotate(-0.3deg);
   }
 
   100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes topoPulse {
+  0%, 100% {
+    opacity: 0.75;
+  }
+
+  50% {
+    opacity: 1;
   }
 }
 
@@ -81,17 +107,19 @@ body {
 
   .ln-topo-far {
     opacity: 0.75;
-    animation: topoDriftA 60s ease-in-out infinite;
+    animation:
+      topoDriftA 18s ease-in-out infinite,
+      topoPulse 9s ease-in-out infinite;
   }
 
   .ln-topo-mid {
     opacity: 0.9;
-    animation: topoDriftB 48s ease-in-out infinite;
+    animation: topoDriftB 13s ease-in-out infinite;
   }
 
   .ln-topo-near {
     opacity: 1;
-    animation: topoDriftA 36s ease-in-out infinite;
+    animation: topoDriftA 9s ease-in-out infinite;
   }
 
   .ln-topo-grain {

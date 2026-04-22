@@ -5,12 +5,12 @@ const CONTOUR_STROKE_SOFT = 'rgba(125, 211, 252, 0.26)'
 const CONTOUR_STROKE_FAINT = 'rgba(103, 232, 249, 0.2)'
 
 export default function TechyBackground({ scrollYProgress }) {
-  const farX = useTransform(scrollYProgress, [0, 1], [0, -40])
-  const farY = useTransform(scrollYProgress, [0, 1], [0, 60])
-  const midX = useTransform(scrollYProgress, [0, 1], [0, 55])
-  const midY = useTransform(scrollYProgress, [0, 1], [0, -70])
-  const nearX = useTransform(scrollYProgress, [0, 1], [0, -80])
-  const nearY = useTransform(scrollYProgress, [0, 1], [0, 90])
+  const farX = useTransform(scrollYProgress, [0, 1], [0, -140])
+  const farY = useTransform(scrollYProgress, [0, 1], [0, 220])
+  const midX = useTransform(scrollYProgress, [0, 1], [0, 200])
+  const midY = useTransform(scrollYProgress, [0, 1], [0, -260])
+  const nearX = useTransform(scrollYProgress, [0, 1], [0, -300])
+  const nearY = useTransform(scrollYProgress, [0, 1], [0, 340])
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
