@@ -5,7 +5,7 @@ export const personalInfo = {
   tagline:
     'I design and ship performance-focused software systems that turn complex data and workflows into clear, measurable outcomes.',
   email: 'harrypatel1214@gmail.com',
-  phone: 'Available upon request',
+  phone: '385-293-9015',
   github: 'https://github.com/HenishPatel1214',
   linkedin: 'https://www.linkedin.com/in/henishpatel2004/',
   education: 'University of Utah — Computer Science (GPA 3.57), Data Science Minor',
@@ -245,12 +245,12 @@ export const contactLinks = [
   {
     label: 'Email',
     value: personalInfo.email,
-    href: `mailto:${personalInfo.email}`,
+    href: 'mailto:harrypatel1214@gmail.com',
   },
   {
     label: 'Phone',
     value: personalInfo.phone,
-    href: null,
+    href: 'tel:+13852939015',
   },
   {
     label: 'GitHub',

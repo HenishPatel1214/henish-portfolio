@@ -34,6 +34,7 @@ function ContactCard({ link }) {
 export default function ContactSection({ links, email }) {
   const resumeHref = `${import.meta.env.BASE_URL}resume/Henish_Patel_Resume.pdf`
   const resumePreviewHref = `${resumeHref}#view=FitH`
+  const emailHref = `mailto:${(email ?? 'harrypatel1214@gmail.com').trim()}`
 
   return (
     <AnimatedSection id="contact" className="mx-auto w-full max-w-6xl px-5 pb-16 pt-16 md:px-8 md:pb-24 md:pt-24">
@@ -53,7 +54,7 @@ export default function ContactSection({ links, email }) {
         <div className="mt-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="flex flex-wrap gap-4">
             <a
-              href={`mailto:${email}`}
+              href={emailHref}
               className="inline-flex items-center gap-2 rounded-full border border-[#7a8be2]/55 px-5 py-3 text-sm font-semibold text-indigo-50 transition hover:border-brand-300/80 hover:text-indigo-50"
             >
               <Mail size={16} />
