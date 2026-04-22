@@ -5,11 +5,11 @@ function StatCard({ value, label, context }) {
     <Motion.article
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      className="group rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-soft backdrop-blur"
+      className="group rounded-2xl border border-[#5667c7]/55 bg-[#1a255d] p-5 shadow-soft backdrop-blur"
     >
       <p className="font-display text-2xl font-semibold text-brand-100">{value}</p>
-      <p className="mt-1 text-sm font-semibold text-white">{label}</p>
-      <p className="mt-2 text-xs leading-relaxed text-slate-400 group-hover:text-slate-300">{context}</p>
+      <p className="mt-1 text-sm font-semibold text-indigo-50">{label}</p>
+      <p className="mt-2 text-xs leading-relaxed text-indigo-300/80 group-hover:text-indigo-200/90">{context}</p>
     </Motion.article>
   )
 }
@@ -42,7 +42,7 @@ function PortraitCluster({ headshots }) {
       <Motion.figure
         whileHover={{ y: -6, rotate: -1 }}
         transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-        className="absolute inset-0 overflow-hidden rounded-[2rem] border border-white/20 bg-slate-900/70 shadow-soft"
+        className="absolute inset-0 overflow-hidden rounded-[2rem] border border-[#7a8be2]/55 bg-[#151f52] shadow-soft"
       >
         <img
           src={toSrc(mainPhoto)}
@@ -51,7 +51,7 @@ function PortraitCluster({ headshots }) {
           style={mainPhoto?.position ? { objectPosition: mainPhoto.position } : undefined}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#051225]/75 via-transparent to-transparent" />
-        <figcaption className="absolute bottom-4 left-4 right-4 rounded-xl border border-white/10 bg-black/35 px-3 py-2 text-xs text-slate-100 backdrop-blur-md">
+        <figcaption className="absolute bottom-4 left-4 right-4 rounded-xl border border-[#5667c7]/55 bg-[#0f173f] px-3 py-2 text-xs text-indigo-50 backdrop-blur-md">
           Building high-performance systems across software, AI, and data.
         </figcaption>
       </Motion.figure>
@@ -59,12 +59,12 @@ function PortraitCluster({ headshots }) {
       <Motion.figure
         animate={{ y: [0, -7, 0] }}
         transition={{ repeat: Infinity, duration: 6.2, ease: 'easeInOut' }}
-        className="absolute -left-9 bottom-7 h-24 w-20 overflow-hidden rounded-2xl border border-brand-200/45 bg-slate-900/70 shadow-lg"
+        className="absolute -left-9 bottom-7 h-24 w-20 overflow-hidden rounded-2xl border border-brand-200/45 bg-[#151f52] shadow-lg"
       >
         <img
           src={toSrc(secondPhoto)}
           alt={secondPhoto?.alt ?? 'Henish Patel profile image'}
-          className="h-full w-full object-cover grayscale-[0.15]"
+          className="h-full w-full object-cover"
           style={secondPhoto?.position ? { objectPosition: secondPhoto.position } : undefined}
         />
       </Motion.figure>
@@ -72,7 +72,7 @@ function PortraitCluster({ headshots }) {
       <Motion.figure
         animate={{ y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 7.1, ease: 'easeInOut' }}
-        className="absolute -right-10 top-8 h-28 w-24 overflow-hidden rounded-2xl border border-cyan-200/45 bg-slate-900/70 shadow-lg"
+        className="absolute -right-10 top-8 h-28 w-24 overflow-hidden rounded-2xl border border-cyan-200/45 bg-[#151f52] shadow-lg"
       >
         <img
           src={toSrc(thirdPhoto)}
@@ -103,7 +103,7 @@ export default function HeroSection({ personalInfo, quickStats, headshots }) {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 font-display text-4xl font-bold leading-[1.05] text-white md:text-6xl"
+            className="mt-6 font-display text-4xl font-bold leading-[1.05] text-indigo-50 md:text-6xl"
           >
             {personalInfo.name}
           </Motion.h1>
@@ -121,7 +121,7 @@ export default function HeroSection({ personalInfo, quickStats, headshots }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 max-w-2xl text-base leading-relaxed text-slate-300 md:text-lg"
+            className="mt-6 max-w-2xl text-base leading-relaxed text-indigo-200/90 md:text-lg"
           >
             {personalInfo.tagline}
           </Motion.p>
@@ -134,19 +134,19 @@ export default function HeroSection({ personalInfo, quickStats, headshots }) {
           >
             <a
               href="#projects"
-              className="inline-flex items-center rounded-full bg-brand-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-brand-200"
+              className="inline-flex items-center rounded-full bg-brand-300 px-6 py-3 text-sm font-semibold text-[#0b1338] transition hover:bg-brand-200"
             >
               Explore Projects
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-brand-300/80 hover:text-white"
+              className="inline-flex items-center rounded-full border border-[#7a8be2]/55 px-6 py-3 text-sm font-semibold text-indigo-50 transition hover:border-brand-300/80 hover:text-indigo-50"
             >
               Contact Me
             </a>
           </Motion.div>
 
-          <p className="mt-8 text-sm text-slate-400">{personalInfo.education}</p>
+          <p className="mt-8 text-sm text-indigo-300/80">{personalInfo.education}</p>
         </div>
 
         <div className="grid gap-5">

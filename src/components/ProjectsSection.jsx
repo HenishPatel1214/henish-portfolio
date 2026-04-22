@@ -9,7 +9,7 @@ function ProjectCard({ project }) {
     <Motion.article
       whileHover={{ y: -8 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-      className="group h-full rounded-2xl border border-white/10 bg-slate-900/45 p-6 shadow-soft"
+      className="group h-full rounded-2xl border border-[#5667c7]/55 bg-[#121a46] p-6 shadow-soft"
     >
       <div className="flex items-center justify-between gap-4">
         <p className="text-xs uppercase tracking-[0.24em] text-brand-200/80">{project.category}</p>
@@ -17,15 +17,15 @@ function ProjectCard({ project }) {
           href={project.github}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-slate-300 transition hover:border-brand-200 hover:text-brand-100"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#7a8be2]/55 text-indigo-200/90 transition hover:border-brand-200 hover:text-brand-100"
           aria-label={`Open ${project.title} repository`}
         >
           <ArrowUpRight size={14} />
         </a>
       </div>
 
-      <h3 className="mt-4 font-display text-xl font-semibold text-white">{project.title}</h3>
-      <p className="mt-4 text-sm leading-relaxed text-slate-300">{project.description}</p>
+      <h3 className="mt-4 font-display text-xl font-semibold text-indigo-50">{project.title}</h3>
+      <p className="mt-4 text-sm leading-relaxed text-indigo-200/90">{project.description}</p>
 
       <div className="mt-5 rounded-xl border border-brand-300/20 bg-brand-400/10 p-4">
         <p className="text-xs uppercase tracking-[0.18em] text-brand-100/90">Impact</p>
@@ -36,7 +36,7 @@ function ProjectCard({ project }) {
         {project.stack.map((item) => (
           <span
             key={item}
-            className="rounded-full border border-white/15 bg-white/[0.03] px-3 py-1 text-xs text-slate-300"
+            className="rounded-full border border-[#6276d6]/55 bg-[#1a255d] px-3 py-1 text-xs text-indigo-200/90"
           >
             {item}
           </span>
@@ -74,7 +74,7 @@ export default function ProjectsSection({ projects, filters }) {
             className={`rounded-full border px-4 py-2 text-sm transition ${
               activeFilter === filter
                 ? 'border-brand-200 bg-brand-300/20 text-brand-100'
-                : 'border-white/15 bg-white/[0.03] text-slate-300 hover:border-brand-300/70 hover:text-white'
+                : 'border-[#6276d6]/55 bg-[#1a255d] text-indigo-200/90 hover:border-brand-300/70 hover:text-indigo-50'
             }`}
           >
             {filter}

@@ -65,9 +65,9 @@ function App() {
   })
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden text-slate-100">
+    <div className="relative min-h-screen overflow-x-hidden text-indigo-50">
       <Motion.div
-        className="fixed left-0 top-0 z-50 h-0.5 w-full origin-left bg-gradient-to-r from-brand-400 via-cyan-300 to-brand-200"
+        className="fixed left-0 top-0 z-50 h-0.5 w-full origin-left bg-gradient-to-r from-brand-500 via-brand-300 to-[#9e82ff]"
         style={{ scaleX: progressBar }}
       />
 

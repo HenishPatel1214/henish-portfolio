@@ -16,7 +16,7 @@ const TEAM_ENDPOINTS = [
     displayName: 'Real Madrid',
     league: 'LALIGA',
     endpoint: 'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86',
-    accent: 'from-slate-200/25 via-slate-400/10 to-transparent',
+    accent: 'from-[#5f7bff]/24 via-[#9f72ff]/16 to-transparent',
   },
   {
     key: 'chelsea',
@@ -81,23 +81,23 @@ function normalizeTeamPayload(payload) {
 
 function TeamCard({ card }) {
   return (
-    <article className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/45 p-6 shadow-soft">
+    <article className="relative overflow-hidden rounded-2xl border border-[#5667c7]/55 bg-[#121a46] p-6 shadow-soft">
       <div className={`absolute inset-0 bg-gradient-to-br ${card.accent}`} />
       <div className="relative">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-brand-100/85">{card.league}</p>
-            <h3 className="mt-3 font-display text-xl font-semibold text-white">{card.displayName}</h3>
+            <h3 className="mt-3 font-display text-xl font-semibold text-indigo-50">{card.displayName}</h3>
           </div>
-          <span className="rounded-full border border-white/15 bg-black/20 px-3 py-1 text-xs text-slate-200">
+          <span className="rounded-full border border-[#6276d6]/55 bg-[#0f173f] px-3 py-1 text-xs text-indigo-100">
             {card.recordSummary}
           </span>
         </div>
 
-        <p className="mt-4 text-sm text-slate-300">{card.standing}</p>
-        <p className="mt-4 text-sm font-semibold text-slate-100">{card.matchLabel}</p>
-        <p className="mt-1 text-xs text-slate-300">{card.eventDate} · {card.status}</p>
-        <p className="mt-3 rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-xs text-slate-200">
+        <p className="mt-4 text-sm text-indigo-200/90">{card.standing}</p>
+        <p className="mt-4 text-sm font-semibold text-indigo-50">{card.matchLabel}</p>
+        <p className="mt-1 text-xs text-indigo-200/90">{card.eventDate} · {card.status}</p>
+        <p className="mt-3 rounded-xl border border-[#5667c7]/55 bg-[#0f173f] px-3 py-2 text-xs text-indigo-100">
           {card.scoreSummary}
         </p>
       </div>
@@ -189,7 +189,7 @@ export default function TeamPulseSection({ musicProfile }) {
         ))}
       </div>
 
-      <p className="mt-5 text-xs text-slate-400">
+      <p className="mt-5 text-xs text-indigo-300/80">
         {loading ? 'Loading live team data...' : `Last updated: ${lastUpdated?.toLocaleTimeString() ?? 'just now'}`}
       </p>
     </AnimatedSection>

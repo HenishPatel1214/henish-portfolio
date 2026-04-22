@@ -16,14 +16,14 @@ export default function SkillsSection({ skills }) {
         {entries.map(([category, values]) => (
           <article
             key={category}
-            className="rounded-2xl border border-white/10 bg-slate-900/45 p-6 shadow-soft"
+            className="rounded-2xl border border-[#5667c7]/55 bg-[#121a46] p-6 shadow-soft"
           >
-            <h3 className="font-display text-lg font-semibold text-white">{category}</h3>
+            <h3 className="font-display text-lg font-semibold text-indigo-50">{category}</h3>
             <div className="mt-4 flex flex-wrap gap-2">
               {values.map((skill) => (
                 <span
                   key={skill}
-                  className="rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-xs text-slate-300"
+                  className="rounded-full border border-[#6276d6]/55 bg-[#1a255d] px-3 py-1 text-xs text-indigo-200/90"
                 >
                   {skill}
                 </span>
