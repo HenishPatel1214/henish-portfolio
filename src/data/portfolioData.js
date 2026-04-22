@@ -245,7 +245,7 @@ export const contactLinks = [
   {
     label: 'Email',
     value: personalInfo.email,
-    href: 'https://mail.google.com/mail/?view=cm&fs=1&to=harrypatel1214%40gmail.com',
+    href: 'mailto:harrypatel1214@gmail.com',
   },
   {
     label: 'Phone',
