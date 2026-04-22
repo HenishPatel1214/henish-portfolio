@@ -33,7 +33,7 @@ export const personalIdentity = {
   name: 'Henish Patel',
   nickname: 'Harry',
   note:
-    'I go by Henish or Harry. I grew up across New York and New Jersey, and I bring the same energy to engineering that I bring to sports: focused, team-oriented, and always trying to level up.',
+    'I go by Henish or Harry. I have lived in Utah for the last 10 years (and still do), while my childhood before age 12 was in New York and New Jersey.',
 }
 
 export const lifestyleInterests = [
@@ -48,6 +48,7 @@ export const lifestyleInterests = [
   'Watching Live Sports',
   'Occasional Travel',
   'Style & Fashion (minimal but intentional)',
+  'BAPS Community Involvement',
 ]
 
 export const funFacts = [
@@ -72,15 +73,21 @@ export const funFacts = [
     text: 'I attended Utah Military Academy, completed JROTC, and served as a Cadet Major, which strengthened my leadership and accountability mindset.',
   },
   {
+    title: 'Faith + Values',
+    text: 'My involvement with BAPS gave me a strong religious and cultural foundation centered on discipline, humility, service, and consistency.',
+  },
+  {
     title: 'Operations Perspective',
     text: 'Through family businesses in motel and gas-station operations, including exposure to Days Inn and Best Western environments, I learned to think in terms of service reliability and real-world operations.',
   },
 ]
 
 export const backgroundStory = [
-  'Grew up in New York and New Jersey before college.',
+  'I have lived in Utah for 10 years and currently live there.',
+  'Before age 12, my childhood was in New York and New Jersey.',
   'Utah Military Academy background with JROTC experience.',
   'Served as a Cadet Major and led with structure and discipline.',
+  'BAPS involvement shaped my religious/cultural values and service mindset.',
   'Family-business exposure across motel and gas-station operations.',
   'Comfortable balancing technical work with people, process, and service quality.',
 ]
