@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { motion as Motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { motion as Motion, useScroll, useSpring } from 'framer-motion'
 import {
   aboutHighlights,
   contactLinks,
   experiences,
+  headshots,
   navigation,
   personalInfo,
   projectFilters,
@@ -19,6 +20,7 @@ import ProjectsSection from './components/ProjectsSection'
 import SkillsSection from './components/SkillsSection'
 import ContactSection from './components/ContactSection'
 import Footer from './components/Footer'
+import TechyBackground from './components/TechyBackground'
 
 function App() {
   const sectionIds = useMemo(() => navigation.map((item) => item.id), [])
@@ -55,8 +57,6 @@ function App() {
     mass: 0.3,
   })
 
-  const gradientY = useTransform(scrollYProgress, [0, 1], [0, 220])
-
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-page text-slate-100">
       <Motion.div
@@ -64,23 +64,12 @@ function App() {
         style={{ scaleX: progressBar }}
       />
 
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <Motion.div
-          className="absolute -left-52 top-24 h-96 w-96 rounded-full bg-brand-500/12 blur-3xl"
-          style={{ y: gradientY }}
-        />
-        <Motion.div
-          className="absolute right-[-7rem] top-[18rem] h-[26rem] w-[26rem] rounded-full bg-cyan-400/10 blur-3xl"
-          style={{ y: useTransform(scrollYProgress, [0, 1], [0, -180]) }}
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(126,231,168,0.08),_transparent_40%),radial-gradient(circle_at_bottom_right,_rgba(34,211,238,0.12),_transparent_35%)]" />
-        <div className="absolute inset-0 bg-grid-mask" />
-      </div>
+      <TechyBackground scrollYProgress={scrollYProgress} />
 
       <Navbar navigation={navigation} activeSection={activeSection} name={personalInfo.name} />
 
       <main>
-        <HeroSection personalInfo={personalInfo} quickStats={quickStats} />
+        <HeroSection personalInfo={personalInfo} quickStats={quickStats} headshots={headshots} />
         <AboutSection highlights={aboutHighlights} />
         <ExperienceSection experiences={experiences} />
         <ProjectsSection projects={projects} filters={projectFilters} />

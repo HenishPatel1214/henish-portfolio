@@ -2,6 +2,35 @@ import { Download, ExternalLink, Mail } from 'lucide-react'
 import AnimatedSection from './AnimatedSection'
 import SectionTitle from './SectionTitle'
 
+function ContactCard({ link }) {
+  const isClickable = Boolean(link.href)
+
+  if (!isClickable) {
+    return (
+      <article className="rounded-2xl border border-white/15 bg-black/20 p-5">
+        <p className="text-xs uppercase tracking-[0.24em] text-brand-100/90">{link.label}</p>
+        <p className="mt-3 text-sm text-slate-200">{link.value}</p>
+      </article>
+    )
+  }
+
+  return (
+    <a
+      href={link.href}
+      target={link.href.startsWith('http') ? '_blank' : undefined}
+      rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
+      className="group rounded-2xl border border-white/15 bg-black/20 p-5 transition hover:-translate-y-1 hover:border-brand-300/70"
+    >
+      <p className="text-xs uppercase tracking-[0.24em] text-brand-100/90">{link.label}</p>
+      <p className="mt-3 text-sm text-slate-200">{link.value}</p>
+      <span className="mt-4 inline-flex items-center gap-2 text-xs text-brand-100">
+        Open
+        <ExternalLink size={12} />
+      </span>
+    </a>
+  )
+}
+
 export default function ContactSection({ links, email }) {
   const resumeHref = `${import.meta.env.BASE_URL}resume/Henish_Patel_Resume.pdf`
 
@@ -14,22 +43,9 @@ export default function ContactSection({ links, email }) {
           description="I am actively seeking software engineering and AI/data systems opportunities where I can ship meaningful products and scalable infrastructure."
         />
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target={link.href.startsWith('http') ? '_blank' : undefined}
-              rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
-              className="group rounded-2xl border border-white/15 bg-black/20 p-5 transition hover:-translate-y-1 hover:border-brand-300/70"
-            >
-              <p className="text-xs uppercase tracking-[0.24em] text-brand-100/90">{link.label}</p>
-              <p className="mt-3 text-sm text-slate-200">{link.value}</p>
-              <span className="mt-4 inline-flex items-center gap-2 text-xs text-brand-100">
-                Open
-                <ExternalLink size={12} />
-              </span>
-            </a>
+            <ContactCard key={link.label} link={link} />
           ))}
         </div>
 

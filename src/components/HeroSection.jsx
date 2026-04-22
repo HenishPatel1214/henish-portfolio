@@ -14,12 +14,77 @@ function StatCard({ value, label, context }) {
   )
 }
 
-export default function HeroSection({ personalInfo, quickStats }) {
+function PortraitCluster({ headshots }) {
+  const baseUrl = import.meta.env.BASE_URL
+  const mainPhoto = headshots[0]
+  const secondPhoto = headshots[1] ?? headshots[0]
+  const thirdPhoto = headshots[2] ?? headshots[0]
+
+  const toSrc = (photo) => {
+    if (!photo?.src) {
+      return 'https://avatars.githubusercontent.com/u/130112154?v=4'
+    }
+
+    if (photo.src.startsWith('http')) {
+      return photo.src
+    }
+
+    return `${baseUrl}${photo.src}`
+  }
+
+  return (
+    <Motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.75, delay: 0.35 }}
+      className="relative mx-auto h-[21rem] w-[17rem] md:h-[24rem] md:w-[19rem]"
+    >
+      <Motion.figure
+        whileHover={{ y: -6, rotate: -1 }}
+        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+        className="absolute inset-0 overflow-hidden rounded-[2rem] border border-white/20 bg-slate-900/70 shadow-soft"
+      >
+        <img
+          src={toSrc(mainPhoto)}
+          alt={mainPhoto?.alt ?? 'Henish Patel portrait'}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#051225]/75 via-transparent to-transparent" />
+        <figcaption className="absolute bottom-4 left-4 right-4 rounded-xl border border-white/10 bg-black/35 px-3 py-2 text-xs text-slate-100 backdrop-blur-md">
+          Building high-performance systems across software, AI, and data.
+        </figcaption>
+      </Motion.figure>
+
+      <Motion.figure
+        animate={{ y: [0, -7, 0] }}
+        transition={{ repeat: Infinity, duration: 6.2, ease: 'easeInOut' }}
+        className="absolute -left-9 bottom-7 h-24 w-20 overflow-hidden rounded-2xl border border-brand-200/45 bg-slate-900/70 shadow-lg"
+      >
+        <img
+          src={toSrc(secondPhoto)}
+          alt={secondPhoto?.alt ?? 'Henish Patel profile image'}
+          className="h-full w-full object-cover grayscale-[0.15]"
+        />
+      </Motion.figure>
+
+      <Motion.figure
+        animate={{ y: [0, 8, 0] }}
+        transition={{ repeat: Infinity, duration: 7.1, ease: 'easeInOut' }}
+        className="absolute -right-10 top-8 h-28 w-24 overflow-hidden rounded-2xl border border-cyan-200/45 bg-slate-900/70 shadow-lg"
+      >
+        <img
+          src={toSrc(thirdPhoto)}
+          alt={thirdPhoto?.alt ?? 'Henish Patel headshot'}
+          className="h-full w-full object-cover saturate-[1.05]"
+        />
+      </Motion.figure>
+    </Motion.div>
+  )
+}
+
+export default function HeroSection({ personalInfo, quickStats, headshots }) {
   return (
     <section id="home" className="relative scroll-mt-24 overflow-hidden pb-8 pt-28 md:pt-36">
-      <div className="absolute -left-36 top-20 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl" />
-      <div className="absolute right-0 top-0 h-60 w-60 rounded-full bg-cyan-400/10 blur-3xl" />
-
       <div className="mx-auto grid w-full max-w-6xl gap-14 px-5 md:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div>
           <Motion.p
@@ -81,16 +146,20 @@ export default function HeroSection({ personalInfo, quickStats }) {
           <p className="mt-8 text-sm text-slate-400">{personalInfo.education}</p>
         </div>
 
-        <Motion.div
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.45 }}
-          className="grid gap-4"
-        >
-          {quickStats.map((item) => (
-            <StatCard key={item.label} {...item} />
-          ))}
-        </Motion.div>
+        <div className="grid gap-5">
+          <PortraitCluster headshots={headshots} />
+
+          <Motion.div
+            initial={{ opacity: 0, y: 26 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.45 }}
+            className="grid gap-4"
+          >
+            {quickStats.map((item) => (
+              <StatCard key={item.label} {...item} />
+            ))}
+          </Motion.div>
+        </div>
       </div>
     </section>
   )

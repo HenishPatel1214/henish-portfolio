@@ -4,10 +4,26 @@ export const personalInfo = {
   tagline:
     'I design and ship performance-focused software systems that turn complex data and workflows into clear, measurable outcomes.',
   email: 'harrypatel1214@gmail.com',
+  phone: 'Available upon request',
   github: 'https://github.com/HenishPatel1214',
   linkedin: 'https://www.linkedin.com/in/henishpatel2004/',
   education: 'University of Utah — Computer Science (GPA 3.57), Data Science Minor',
 }
+
+export const headshots = [
+  {
+    src: 'profile/henish-avatar.jpg',
+    alt: 'Henish Patel portrait',
+  },
+  {
+    src: 'profile/henish-portrait-2.jpg',
+    alt: 'Henish Patel professional headshot',
+  },
+  {
+    src: 'profile/henish-portrait-3.jpg',
+    alt: 'Henish Patel profile photo',
+  },
+]
 
 export const navigation = [
   { label: 'Home', href: '#home', id: 'home' },
@@ -152,6 +168,11 @@ export const contactLinks = [
     label: 'Email',
     value: personalInfo.email,
     href: `mailto:${personalInfo.email}`,
+  },
+  {
+    label: 'Phone',
+    value: personalInfo.phone,
+    href: null,
   },
   {
     label: 'GitHub',
