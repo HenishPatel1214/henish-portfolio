@@ -37,7 +37,7 @@ export default function ContactSection({ links, email }) {
   const emailHref = `mailto:${(email ?? 'harrypatel1214@gmail.com').trim()}`
 
   return (
-    <AnimatedSection id="contact" className="mx-auto w-full max-w-6xl px-5 pb-16 pt-16 md:px-8 md:pb-24 md:pt-24">
+    <AnimatedSection id="contact" variant="fromLeft" className="mx-auto w-full max-w-6xl px-5 pb-16 pt-16 md:px-8 md:pb-24 md:pt-24">
       <div className="overflow-hidden rounded-3xl border border-[#5667c7]/55 bg-gradient-to-br from-[#1a255d] via-[#121a46] to-[#0f173f] p-8 md:p-12">
         <SectionTitle
           eyebrow="Contact"

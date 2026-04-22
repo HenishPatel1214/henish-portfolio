@@ -5,7 +5,7 @@ export default function SkillsSection({ skills }) {
   const entries = Object.entries(skills)
 
   return (
-    <AnimatedSection id="skills" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <AnimatedSection id="skills" variant="fromBottom" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <SectionTitle
         eyebrow="Skills"
         title="Technical toolkit built for end-to-end delivery."

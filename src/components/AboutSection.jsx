@@ -3,7 +3,7 @@ import SectionTitle from './SectionTitle'
 
 export default function AboutSection({ highlights }) {
   return (
-    <AnimatedSection id="about" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <AnimatedSection id="about" variant="fromLeft" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <SectionTitle
         eyebrow="About"
         title="I build software systems that make complex operations feel simple."

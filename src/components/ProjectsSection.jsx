@@ -58,7 +58,7 @@ export default function ProjectsSection({ projects, filters }) {
   }, [activeFilter, projects])
 
   return (
-    <AnimatedSection id="projects" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <AnimatedSection id="projects" variant="zoomOut" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <SectionTitle
         eyebrow="Projects"
         title="High-impact builds across AI, data, and full-stack systems."

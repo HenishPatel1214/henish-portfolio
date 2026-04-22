@@ -3,7 +3,7 @@ import SectionTitle from './SectionTitle'
 
 export default function BeyondCodeSection({ identity, lifestyle, funFacts, backgroundStory }) {
   return (
-    <AnimatedSection id="beyond" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <AnimatedSection id="beyond" variant="zoomIn" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <SectionTitle
         eyebrow="Beyond Code"
         title="Who I am outside engineering."
