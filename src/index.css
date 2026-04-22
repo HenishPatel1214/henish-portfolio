@@ -24,109 +24,84 @@ body {
   @apply bg-brand-400/40 text-indigo-50;
 }
 
-@keyframes gridFloat {
+@keyframes waveDriftA {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-3.8%, 2.4%, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes waveDriftB {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(3.4%, -2%, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes grainShift {
   0% {
     transform: translate3d(0, 0, 0);
   }
 
   100% {
-    transform: translate3d(-26px, 14px, 0);
-  }
-}
-
-@keyframes blobDriftA {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  50% {
-    transform: translate3d(7%, -3%, 0) scale(1.06);
-  }
-}
-
-@keyframes blobDriftB {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  50% {
-    transform: translate3d(-8%, 2.5%, 0) scale(0.94);
-  }
-}
-
-@keyframes noiseShift {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(22px, 18px, 0);
+    transform: translate3d(28px, 18px, 0);
   }
 }
 
 @layer utilities {
-  .ln-bg-base {
+  .ln-wave-base {
     background:
-      radial-gradient(150% 130% at 14% 4%, rgba(66, 84, 110, 0.34), transparent 52%),
-      radial-gradient(140% 120% at 92% 18%, rgba(46, 60, 83, 0.32), transparent 54%),
-      linear-gradient(170deg, #050812 0%, #080d1b 48%, #0a1021 100%);
+      radial-gradient(130% 140% at 10% -10%, rgba(59, 70, 89, 0.28), transparent 48%),
+      radial-gradient(130% 120% at 90% 8%, rgba(74, 86, 106, 0.2), transparent 52%),
+      linear-gradient(176deg, #060b16 0%, #0a101d 50%, #0b1220 100%);
   }
 
-  .ln-bg-blob {
+  .ln-wave-svg {
     position: absolute;
-    border-radius: 999px;
-    filter: blur(28px);
+    left: -28%;
+    top: -24%;
+    width: 172%;
+    height: 160%;
   }
 
-  .ln-bg-blob-a {
-    top: -14%;
-    left: -20%;
-    width: 62vw;
-    height: 62vw;
-    background: radial-gradient(circle, rgba(70, 90, 121, 0.42) 0%, rgba(70, 90, 121, 0) 68%);
-    animation: blobDriftA 28s ease-in-out infinite;
+  .ln-wave-fill-a {
+    opacity: 0.9;
+    animation: waveDriftA 34s ease-in-out infinite;
   }
 
-  .ln-bg-blob-b {
-    top: 18%;
-    right: -18%;
-    width: 54vw;
-    height: 54vw;
-    background: radial-gradient(circle, rgba(85, 104, 132, 0.36) 0%, rgba(85, 104, 132, 0) 70%);
-    animation: blobDriftB 34s ease-in-out infinite;
+  .ln-wave-fill-b {
+    opacity: 0.8;
+    animation: waveDriftB 42s ease-in-out infinite;
   }
 
-  .ln-bg-blob-c {
-    bottom: -26%;
-    left: 20%;
-    width: 58vw;
-    height: 58vw;
-    background: radial-gradient(circle, rgba(54, 72, 98, 0.42) 0%, rgba(54, 72, 98, 0) 70%);
-    animation: blobDriftA 40s ease-in-out infinite;
+  .ln-wave-lines {
+    opacity: 0.68;
+    animation: waveDriftA 48s ease-in-out infinite;
   }
 
-  .ln-bg-grid {
-    background-image:
-      linear-gradient(rgba(126, 147, 176, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(126, 147, 176, 0.06) 1px, transparent 1px);
-    background-size: 48px 48px;
-    opacity: 0.18;
-    mask-image: radial-gradient(circle at center, black 12%, transparent 76%);
-    -webkit-mask-image: radial-gradient(circle at center, black 12%, transparent 76%);
-    animation: gridFloat 26s linear infinite;
-  }
-
-  .ln-bg-noise {
-    background-image: radial-gradient(circle, rgba(201, 212, 230, 0.16) 0.55px, transparent 0.55px);
-    background-size: 3px 3px;
-    opacity: 0.1;
+  .ln-wave-grain {
+    background-image: radial-gradient(circle, rgba(204, 211, 221, 0.12) 0.6px, transparent 0.6px);
+    background-size: 3.2px 3.2px;
+    opacity: 0.14;
     mix-blend-mode: soft-light;
-    animation: noiseShift 18s linear infinite;
+    animation: grainShift 16s linear infinite;
   }
 
-  .ln-bg-vignette {
-    background: radial-gradient(circle at center, transparent 30%, rgba(3, 7, 16, 0.84) 100%);
+  .ln-wave-vignette {
+    background: radial-gradient(circle at center, transparent 34%, rgba(3, 7, 14, 0.82) 100%);
   }
 }
