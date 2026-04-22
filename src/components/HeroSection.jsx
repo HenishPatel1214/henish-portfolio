@@ -14,78 +14,7 @@ function StatCard({ value, label, context }) {
   )
 }
 
-function PortraitCluster({ headshots }) {
-  const baseUrl = import.meta.env.BASE_URL
-  const mainPhoto = headshots[0]
-  const secondPhoto = headshots[1] ?? headshots[0]
-  const thirdPhoto = headshots[2] ?? headshots[0]
-
-  const toSrc = (photo) => {
-    if (!photo?.src) {
-      return 'https://avatars.githubusercontent.com/u/130112154?v=4'
-    }
-
-    if (photo.src.startsWith('http')) {
-      return photo.src
-    }
-
-    return `${baseUrl}${photo.src}`
-  }
-
-  return (
-    <Motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.75, delay: 0.35 }}
-      className="relative mx-auto h-[21rem] w-[17rem] md:h-[24rem] md:w-[19rem]"
-    >
-      <Motion.figure
-        whileHover={{ y: -6, rotate: -1 }}
-        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-        className="absolute inset-0 overflow-hidden rounded-[2rem] border border-[#7a8be2]/55 bg-[#151f52] shadow-soft"
-      >
-        <img
-          src={toSrc(mainPhoto)}
-          alt={mainPhoto?.alt ?? 'Henish Patel portrait'}
-          className="h-full w-full object-cover"
-          style={mainPhoto?.position ? { objectPosition: mainPhoto.position } : undefined}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#051225]/75 via-transparent to-transparent" />
-        <figcaption className="absolute bottom-4 left-4 right-4 rounded-xl border border-[#5667c7]/55 bg-[#0f173f] px-3 py-2 text-xs text-indigo-50 backdrop-blur-md">
-          Building high-performance systems across software, AI, and data.
-        </figcaption>
-      </Motion.figure>
-
-      <Motion.figure
-        animate={{ y: [0, -7, 0] }}
-        transition={{ repeat: Infinity, duration: 6.2, ease: 'easeInOut' }}
-        className="absolute -left-9 bottom-7 h-24 w-20 overflow-hidden rounded-2xl border border-brand-200/45 bg-[#151f52] shadow-lg"
-      >
-        <img
-          src={toSrc(secondPhoto)}
-          alt={secondPhoto?.alt ?? 'Henish Patel profile image'}
-          className="h-full w-full object-cover"
-          style={secondPhoto?.position ? { objectPosition: secondPhoto.position } : undefined}
-        />
-      </Motion.figure>
-
-      <Motion.figure
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 7.1, ease: 'easeInOut' }}
-        className="absolute -right-10 top-8 h-28 w-24 overflow-hidden rounded-2xl border border-cyan-200/45 bg-[#151f52] shadow-lg"
-      >
-        <img
-          src={toSrc(thirdPhoto)}
-          alt={thirdPhoto?.alt ?? 'Henish Patel headshot'}
-          className="h-full w-full object-cover saturate-[1.05]"
-          style={thirdPhoto?.position ? { objectPosition: thirdPhoto.position } : undefined}
-        />
-      </Motion.figure>
-    </Motion.div>
-  )
-}
-
-export default function HeroSection({ personalInfo, quickStats, headshots }) {
+export default function HeroSection({ personalInfo, quickStats }) {
   return (
     <section id="home" className="relative scroll-mt-24 overflow-hidden pb-8 pt-28 md:pt-36">
       <div className="mx-auto grid w-full max-w-6xl gap-14 px-5 md:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
@@ -150,8 +79,6 @@ export default function HeroSection({ personalInfo, quickStats, headshots }) {
         </div>
 
         <div className="grid gap-5">
-          <PortraitCluster headshots={headshots} />
-
           <Motion.div
             initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}

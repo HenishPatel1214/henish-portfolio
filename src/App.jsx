@@ -6,7 +6,6 @@ import {
   contactLinks,
   experiences,
   funFacts,
-  headshots,
   lifestyleInterests,
   musicProfile,
   navigation,
@@ -76,7 +75,7 @@ function App() {
       <Navbar navigation={navigation} activeSection={activeSection} name={personalInfo.name} />
 
       <main className="relative z-10">
-        <HeroSection personalInfo={personalInfo} quickStats={quickStats} headshots={headshots} />
+        <HeroSection personalInfo={personalInfo} quickStats={quickStats} />
         <AboutSection highlights={aboutHighlights} />
         <BeyondCodeSection
           identity={personalIdentity}
