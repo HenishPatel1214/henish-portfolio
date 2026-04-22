@@ -24,26 +24,6 @@ body {
   @apply bg-brand-300/50 text-white;
 }
 
-@keyframes techWaveForward {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-25%, 0, 0);
-  }
-}
-
-@keyframes techWaveBackward {
-  0% {
-    transform: translate3d(-24%, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
 @keyframes cloudPulseA {
   0%,
   100% {
@@ -51,7 +31,7 @@ body {
   }
 
   50% {
-    transform: translate3d(-2%, 3%, 0) scale(1.05);
+    transform: translate3d(-2%, 3%, 0) scale(1.04);
   }
 }
 
@@ -62,7 +42,7 @@ body {
   }
 
   50% {
-    transform: translate3d(3%, -2%, 0) scale(1.06);
+    transform: translate3d(2%, -2%, 0) scale(1.06);
   }
 }
 
@@ -77,64 +57,61 @@ body {
 
   .bg-tech-base {
     background:
-      radial-gradient(circle at 14% 16%, rgba(126, 231, 168, 0.17), transparent 38%),
-      radial-gradient(circle at 88% 18%, rgba(34, 211, 238, 0.14), transparent 44%),
-      radial-gradient(circle at 50% 82%, rgba(51, 65, 85, 0.22), transparent 56%),
-      linear-gradient(165deg, #03070f 0%, #050d17 52%, #02050b 100%);
+      radial-gradient(circle at 14% 15%, rgba(126, 231, 168, 0.1), transparent 38%),
+      radial-gradient(circle at 87% 22%, rgba(34, 211, 238, 0.1), transparent 42%),
+      radial-gradient(circle at 50% 82%, rgba(30, 41, 59, 0.32), transparent 58%),
+      linear-gradient(160deg, #020710 0%, #05101c 56%, #01050c 100%);
   }
 
-  .tech-wave-cloud {
+  .tech-orb {
     border-radius: 9999px;
-    filter: blur(70px);
-    opacity: 0.72;
+    filter: blur(85px);
+    opacity: 0.62;
   }
 
-  .tech-wave-cloud-primary {
-    background: radial-gradient(circle at 50% 50%, rgba(126, 231, 168, 0.25), transparent 67%);
+  .tech-orb-primary {
+    background: radial-gradient(circle at center, rgba(126, 231, 168, 0.21), transparent 72%);
     animation: cloudPulseA 18s ease-in-out infinite;
   }
 
-  .tech-wave-cloud-secondary {
-    background: radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.18), transparent 70%);
-    animation: cloudPulseB 24s ease-in-out infinite;
+  .tech-orb-secondary {
+    background: radial-gradient(circle at center, rgba(34, 211, 238, 0.2), transparent 74%);
+    animation: cloudPulseB 22s ease-in-out infinite;
   }
 
-  .tech-wave-lines {
+  .tech-ribbon {
     position: absolute;
-    top: 16%;
-    left: -30%;
-    width: 210%;
-    height: 48%;
-    fill: none;
+    left: -15%;
+    right: -15%;
+    height: 36vh;
+    border-radius: 9999px;
+    filter: blur(28px);
+    opacity: 0.32;
   }
 
-  .tech-wave-lines path {
-    stroke: rgba(167, 243, 208, 0.28);
-    stroke-width: 1.2;
+  .tech-ribbon-a {
+    top: 12%;
+    transform: rotate(-6deg);
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0.01), rgba(34, 211, 238, 0.26), rgba(126, 231, 168, 0.18), rgba(34, 211, 238, 0.01));
   }
 
-  .tech-wave-lines-front {
-    opacity: 0.44;
-    animation: techWaveForward 26s linear infinite;
+  .tech-ribbon-b {
+    top: 42%;
+    transform: rotate(7deg);
+    background: linear-gradient(90deg, rgba(126, 231, 168, 0.01), rgba(126, 231, 168, 0.24), rgba(56, 189, 248, 0.2), rgba(126, 231, 168, 0.01));
   }
 
-  .tech-wave-lines-back {
-    opacity: 0.22;
-    animation: techWaveBackward 34s linear infinite;
-  }
-
-  .tech-dot-field {
+  .tech-flow-grid {
     background-image:
-      radial-gradient(circle at center, rgba(125, 211, 252, 0.2) 0.7px, transparent 0.7px),
-      radial-gradient(circle at center, rgba(126, 231, 168, 0.2) 0.7px, transparent 0.7px);
-    background-size: 28px 28px, 44px 44px;
-    background-position: 0 0, 22px 14px;
-    opacity: 0.24;
-    mask-image: radial-gradient(circle at center, black 22%, transparent 84%);
-    -webkit-mask-image: radial-gradient(circle at center, black 22%, transparent 84%);
+      linear-gradient(115deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+      linear-gradient(25deg, rgba(126, 231, 168, 0.06) 1px, transparent 1px);
+    background-size: 120px 120px, 80px 80px;
+    opacity: 0.2;
+    mask-image: radial-gradient(circle at center, black 30%, transparent 88%);
+    -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 88%);
   }
 
   .tech-vignette {
-    background: radial-gradient(circle at center, transparent 34%, rgba(2, 8, 17, 0.84) 100%);
+    background: radial-gradient(circle at center, transparent 35%, rgba(2, 8, 17, 0.87) 100%);
   }
 }

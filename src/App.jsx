@@ -2,10 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion as Motion, useScroll, useSpring } from 'framer-motion'
 import {
   aboutHighlights,
+  backgroundStory,
   contactLinks,
   experiences,
+  funFacts,
   headshots,
+  lifestyleInterests,
   navigation,
+  personalIdentity,
   personalInfo,
   projectFilters,
   projects,
@@ -15,6 +19,8 @@ import {
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import AboutSection from './components/AboutSection'
+import BeyondCodeSection from './components/BeyondCodeSection'
+import TeamPulseSection from './components/TeamPulseSection'
 import ExperienceSection from './components/ExperienceSection'
 import ProjectsSection from './components/ProjectsSection'
 import SkillsSection from './components/SkillsSection'
@@ -71,6 +77,13 @@ function App() {
       <main>
         <HeroSection personalInfo={personalInfo} quickStats={quickStats} headshots={headshots} />
         <AboutSection highlights={aboutHighlights} />
+        <BeyondCodeSection
+          identity={personalIdentity}
+          lifestyle={lifestyleInterests}
+          funFacts={funFacts}
+          backgroundStory={backgroundStory}
+        />
+        <TeamPulseSection />
         <ExperienceSection experiences={experiences} />
         <ProjectsSection projects={projects} filters={projectFilters} />
         <SkillsSection skills={skills} />

@@ -1,5 +1,6 @@
 export const personalInfo = {
   name: 'Henish Patel',
+  nickname: 'Harry',
   title: 'Software Engineer & AI/Data Systems Builder',
   tagline:
     'I design and ship performance-focused software systems that turn complex data and workflows into clear, measurable outcomes.',
@@ -28,9 +29,67 @@ export const headshots = [
   },
 ]
 
+export const personalIdentity = {
+  name: 'Henish Patel',
+  nickname: 'Harry',
+  note:
+    'I go by Henish or Harry. I grew up across New York and New Jersey, and I bring the same energy to engineering that I bring to sports: focused, team-oriented, and always trying to level up.',
+}
+
+export const lifestyleInterests = [
+  'Basketball',
+  'Soccer / Football',
+  'Knicks Fan',
+  'New York Giants Fan',
+  'Real Madrid Fan',
+  'Chelsea Fan',
+  'Gym Sessions',
+  'Hanging Out with Friends',
+  'Watching Live Sports',
+  'Occasional Travel',
+  'Style & Fashion (minimal but intentional)',
+]
+
+export const funFacts = [
+  {
+    title: 'Game-Day Energy',
+    text: 'I regularly watch Knicks matches and football fixtures, and I enjoy breaking down strategy and momentum swings just like I do in technical systems.',
+  },
+  {
+    title: 'On-Court Habit',
+    text: 'I play basketball as often as I can. It keeps me competitive, sharp under pressure, and focused on fundamentals.',
+  },
+  {
+    title: 'Style Philosophy',
+    text: 'I am into fashion enough to care about clean fits and details, but I keep it practical and grounded.',
+  },
+  {
+    title: 'Social + Recharge',
+    text: 'Best reset is simple: gym session, hoop run, time with friends, and planning the next trip when possible.',
+  },
+  {
+    title: 'Leadership Background',
+    text: 'I attended Utah Military Academy, completed JROTC, and served as a Cadet Major, which strengthened my leadership and accountability mindset.',
+  },
+  {
+    title: 'Operations Perspective',
+    text: 'Through family businesses in motel and gas-station operations, including exposure to Days Inn and Best Western environments, I learned to think in terms of service reliability and real-world operations.',
+  },
+]
+
+export const backgroundStory = [
+  'Grew up in New York and New Jersey before college.',
+  'Utah Military Academy background with JROTC experience.',
+  'Served as a Cadet Major and led with structure and discipline.',
+  'Family-business exposure across motel and gas-station operations.',
+  'Comfortable balancing technical work with people, process, and service quality.',
+]
+
 export const navigation = [
   { label: 'Home', href: '#home', id: 'home' },
   { label: 'About', href: '#about', id: 'about' },
+  { label: 'Beyond Code', href: '#beyond', id: 'beyond' },
+  { label: 'Team Pulse', href: '#team-pulse', id: 'team-pulse' },
   { label: 'Experience', href: '#experience', id: 'experience' },
   { label: 'Projects', href: '#projects', id: 'projects' },
   { label: 'Skills', href: '#skills', id: 'skills' },
