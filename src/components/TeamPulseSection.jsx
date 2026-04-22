@@ -172,26 +172,43 @@ export default function TeamPulseSection({ musicProfile }) {
   const renderedCards = cards.length ? cards : fallbackCards
 
   return (
-    <AnimatedSection id="team-pulse" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
-      <SectionTitle
-        eyebrow="Team Pulse"
-        title="Live updates from my favorite teams."
-        description="Auto-refreshing snapshots for the New York Knicks, New York Giants, Real Madrid, and Chelsea, plus a daily shuffle from my playlist. This section updates every 5 minutes."
-      />
-
-      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <DailyPlaylistPick
-          playlistUrl={musicProfile?.playlistUrl}
-          favoriteArtist={musicProfile?.favoriteArtist}
+    <AnimatedSection id="team-pulse" className="relative overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#0a0a0a]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_30%,rgba(255,128,0,0.35),transparent_55%),radial-gradient(circle_at_85%_70%,rgba(255,90,0,0.28),transparent_60%),radial-gradient(circle_at_50%_110%,rgba(255,165,60,0.18),transparent_65%)]" />
+        <div className="absolute -top-20 left-1/2 h-[140%] w-40 -translate-x-1/2 rotate-12 bg-gradient-to-b from-transparent via-[#ff8000]/20 to-transparent blur-sm" />
+        <div className="absolute -top-20 left-[62%] h-[140%] w-8 rotate-12 bg-gradient-to-b from-transparent via-[#ff8000]/35 to-transparent" />
+        <div
+          className="absolute inset-0 opacity-[0.22] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          }}
         />
-        {renderedCards.map((card) => (
-          <TeamCard key={card.key} card={card} />
-        ))}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0b1131] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0b1131] to-transparent" />
       </div>
 
-      <p className="mt-5 text-xs text-indigo-300/80">
-        {loading ? 'Loading live team data...' : `Last updated: ${lastUpdated?.toLocaleTimeString() ?? 'just now'}`}
-      </p>
+      <div className="relative mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-24">
+        <SectionTitle
+          eyebrow="Team Pulse"
+          title="Live updates from my favorite teams."
+          description="Auto-refreshing snapshots for the New York Knicks, New York Giants, Real Madrid, and Chelsea, plus a daily shuffle from my playlist. This section updates every 5 minutes."
+        />
+
+        <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <DailyPlaylistPick
+            playlistUrl={musicProfile?.playlistUrl}
+            favoriteArtist={musicProfile?.favoriteArtist}
+          />
+          {renderedCards.map((card) => (
+            <TeamCard key={card.key} card={card} />
+          ))}
+        </div>
+
+        <p className="mt-5 text-xs text-orange-200/80">
+          {loading ? 'Loading live team data...' : `Last updated: ${lastUpdated?.toLocaleTimeString() ?? 'just now'}`}
+        </p>
+      </div>
     </AnimatedSection>
   )
 }
