@@ -46,6 +46,26 @@ body {
   }
 }
 
+@keyframes waveDriftForward {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-18%, 0, 0);
+  }
+}
+
+@keyframes waveDriftBackward {
+  0% {
+    transform: translate3d(-16%, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @layer utilities {
   .bg-grid-mask {
     background-image: linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
@@ -109,6 +129,41 @@ body {
     opacity: 0.2;
     mask-image: radial-gradient(circle at center, black 30%, transparent 88%);
     -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 88%);
+  }
+
+  .tech-wave-layer {
+    position: absolute;
+    left: -60%;
+    width: 220%;
+    height: 30vh;
+    fill: none;
+    filter: drop-shadow(0 0 18px rgba(45, 212, 191, 0.18));
+  }
+
+  .tech-wave-layer path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+  }
+
+  .tech-wave-layer-a {
+    top: 18%;
+    opacity: 0.5;
+    animation: waveDriftForward 34s linear infinite;
+  }
+
+  .tech-wave-layer-a path {
+    stroke: rgba(126, 231, 168, 0.52);
+  }
+
+  .tech-wave-layer-b {
+    top: 36%;
+    opacity: 0.32;
+    animation: waveDriftBackward 46s linear infinite;
+  }
+
+  .tech-wave-layer-b path {
+    stroke: rgba(56, 189, 248, 0.48);
   }
 
   .tech-vignette {
