@@ -19,6 +19,10 @@ export default function TechyBackground({ scrollYProgress }) {
   const stripeParallaxYReverse = useTransform(scrollYProgress, [0, 1], [0, -70])
   const stripeParallaxX = useTransform(scrollYProgress, [0, 1], [0, -120])
   const stripeParallaxXReverse = useTransform(scrollYProgress, [0, 1], [0, 90])
+  const ribbonDriftY = useTransform(scrollYProgress, [0, 1], [0, 140])
+  const ribbonDriftYReverse = useTransform(scrollYProgress, [0, 1], [0, -120])
+  const ribbonDriftX = useTransform(scrollYProgress, [0, 1], [0, -70])
+  const ribbonDriftXReverse = useTransform(scrollYProgress, [0, 1], [0, 55])
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
@@ -44,6 +48,20 @@ export default function TechyBackground({ scrollYProgress }) {
         {renderPaths(secondaryStripePaths, 'secondary')}
       </Motion.svg>
 
+      <Motion.div
+        className="spec-ribbon spec-ribbon-a"
+        style={{ x: ribbonDriftX, y: ribbonDriftY }}
+      />
+      <Motion.div
+        className="spec-ribbon spec-ribbon-b"
+        style={{ x: ribbonDriftXReverse, y: ribbonDriftYReverse }}
+      />
+      <Motion.div
+        className="spec-ribbon spec-ribbon-c"
+        style={{ x: stripeParallaxXReverse, y: stripeParallaxY }}
+      />
+
+      <div className="absolute inset-0 spec-flow-lines" />
       <div className="absolute inset-0 spec-dots-global" />
       <div className="absolute inset-0 spec-dots-focus" />
       <div className="absolute inset-0 spec-grid-haze" />

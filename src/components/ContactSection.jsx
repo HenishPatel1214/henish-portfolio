@@ -1,4 +1,4 @@
-import { Download, ExternalLink, Mail } from 'lucide-react'
+import { Download, ExternalLink, Eye, Mail } from 'lucide-react'
 import AnimatedSection from './AnimatedSection'
 import SectionTitle from './SectionTitle'
 
@@ -33,6 +33,7 @@ function ContactCard({ link }) {
 
 export default function ContactSection({ links, email }) {
   const resumeHref = `${import.meta.env.BASE_URL}resume/Henish_Patel_Resume.pdf`
+  const resumePreviewHref = `${resumeHref}#view=FitH`
 
   return (
     <AnimatedSection id="contact" className="mx-auto w-full max-w-6xl px-5 pb-16 pt-16 md:px-8 md:pb-24 md:pt-24">
@@ -49,23 +50,47 @@ export default function ContactSection({ links, email }) {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-4">
-          <a
-            href={`mailto:${email}`}
-            className="inline-flex items-center gap-2 rounded-full border border-[#7a8be2]/55 px-5 py-3 text-sm font-semibold text-indigo-50 transition hover:border-brand-300/80 hover:text-indigo-50"
-          >
-            <Mail size={16} />
-            Email Me
-          </a>
+        <div className="mt-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="flex flex-wrap gap-4">
+            <a
+              href={`mailto:${email}`}
+              className="inline-flex items-center gap-2 rounded-full border border-[#7a8be2]/55 px-5 py-3 text-sm font-semibold text-indigo-50 transition hover:border-brand-300/80 hover:text-indigo-50"
+            >
+              <Mail size={16} />
+              Email Me
+            </a>
 
-          <a
-            href={resumeHref}
-            download
-            className="inline-flex items-center gap-2 rounded-full bg-brand-300 px-5 py-3 text-sm font-semibold text-[#0b1338] transition hover:bg-brand-200"
-          >
-            <Download size={16} />
-            Download Resume
-          </a>
+            <a
+              href={resumePreviewHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-[#7a8be2]/55 bg-[#0f173f] px-5 py-3 text-sm font-semibold text-indigo-50 transition hover:border-brand-300/80"
+            >
+              <Eye size={16} />
+              Preview Resume
+            </a>
+
+            <a
+              href={resumeHref}
+              download="Henish_Patel_Resume.pdf"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-300 px-5 py-3 text-sm font-semibold text-[#0b1338] transition hover:bg-brand-200"
+            >
+              <Download size={16} />
+              Download Resume
+            </a>
+          </div>
+
+          <article className="hidden rounded-2xl border border-[#6276d6]/55 bg-[#0f173f] p-4 lg:block">
+            <p className="text-xs uppercase tracking-[0.24em] text-brand-100/85">Resume Preview</p>
+            <div className="mt-3 h-[22rem] overflow-hidden rounded-xl border border-[#6276d6]/55 bg-[#0b1234]">
+              <iframe
+                src={resumePreviewHref}
+                title="Henish Patel Resume Preview"
+                className="h-full w-full"
+                loading="lazy"
+              />
+            </div>
+          </article>
         </div>
       </div>
     </AnimatedSection>
