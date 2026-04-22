@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import AnimatedSection from './AnimatedSection'
+import DailyPlaylistPick from './DailyPlaylistPick'
 import SectionTitle from './SectionTitle'
 
 const TEAM_ENDPOINTS = [
@@ -104,7 +105,7 @@ function TeamCard({ card }) {
   )
 }
 
-export default function TeamPulseSection() {
+export default function TeamPulseSection({ musicProfile }) {
   const [cards, setCards] = useState([])
   const [loading, setLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState(null)
@@ -175,10 +176,14 @@ export default function TeamPulseSection() {
       <SectionTitle
         eyebrow="Team Pulse"
         title="Live updates from my favorite teams."
-        description="Auto-refreshing snapshots for the New York Knicks, New York Giants, Real Madrid, and Chelsea. This section updates every 5 minutes."
+        description="Auto-refreshing snapshots for the New York Knicks, New York Giants, Real Madrid, and Chelsea, plus a daily shuffle from my playlist. This section updates every 5 minutes."
       />
 
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <DailyPlaylistPick
+          playlistUrl={musicProfile?.playlistUrl}
+          favoriteArtist={musicProfile?.favoriteArtist}
+        />
         {renderedCards.map((card) => (
           <TeamCard key={card.key} card={card} />
         ))}

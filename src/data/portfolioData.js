@@ -11,6 +11,11 @@ export const personalInfo = {
   education: 'University of Utah — Computer Science (GPA 3.57), Data Science Minor',
 }
 
+export const musicProfile = {
+  favoriteArtist: 'Drake',
+  playlistUrl: 'https://open.spotify.com/playlist/1p66TD79OWxi6fBya2Cwxf?si=SdlNaBeDTr6rV1fAg-jAdA',
+}
+
 export const headshots = [
   {
     src: 'profile/henish-suit.jpeg',
@@ -75,6 +80,10 @@ export const funFacts = [
   {
     title: 'Faith + Values',
     text: 'My involvement with BAPS gave me a strong religious and cultural foundation centered on discipline, humility, service, and consistency.',
+  },
+  {
+    title: 'Music Vibe',
+    text: 'Drake is my favorite artist, and I keep a rotating playlist with Drake, The Weeknd, and related tracks as a daily focus soundtrack.',
   },
   {
     title: 'Operations Perspective',

@@ -8,6 +8,7 @@ import {
   funFacts,
   headshots,
   lifestyleInterests,
+  musicProfile,
   navigation,
   personalIdentity,
   personalInfo,
@@ -64,7 +65,7 @@ function App() {
   })
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-page text-slate-100">
+    <div className="relative min-h-screen overflow-x-hidden text-slate-100">
       <Motion.div
         className="fixed left-0 top-0 z-50 h-0.5 w-full origin-left bg-gradient-to-r from-brand-400 via-cyan-300 to-brand-200"
         style={{ scaleX: progressBar }}
@@ -74,7 +75,7 @@ function App() {
 
       <Navbar navigation={navigation} activeSection={activeSection} name={personalInfo.name} />
 
-      <main>
+      <main className="relative z-10">
         <HeroSection personalInfo={personalInfo} quickStats={quickStats} headshots={headshots} />
         <AboutSection highlights={aboutHighlights} />
         <BeyondCodeSection
@@ -83,14 +84,16 @@ function App() {
           funFacts={funFacts}
           backgroundStory={backgroundStory}
         />
-        <TeamPulseSection />
+        <TeamPulseSection musicProfile={musicProfile} />
         <ExperienceSection experiences={experiences} />
         <ProjectsSection projects={projects} filters={projectFilters} />
         <SkillsSection skills={skills} />
         <ContactSection links={contactLinks} email={personalInfo.email} />
       </main>
 
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </div>
   )
 }

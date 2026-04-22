@@ -21,7 +21,7 @@ export default function TechyBackground({ scrollYProgress }) {
   const stripeParallaxXReverse = useTransform(scrollYProgress, [0, 1], [0, 90])
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div className="absolute inset-0 bg-specsheet-base" />
 
       <Motion.svg
@@ -46,6 +46,7 @@ export default function TechyBackground({ scrollYProgress }) {
 
       <div className="absolute inset-0 spec-dots-global" />
       <div className="absolute inset-0 spec-dots-focus" />
+      <div className="absolute inset-0 spec-grid-haze" />
       <div className="absolute inset-0 spec-vignette" />
     </div>
   )
