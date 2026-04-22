@@ -1,0 +1,28 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="70" y1="40" x2="1120" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#04101b" />
+      <stop offset="1" stop-color="#02060c" />
+    </linearGradient>
+    <linearGradient id="line" x1="166" y1="130" x2="920" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7EE7A8" />
+      <stop offset="1" stop-color="#22D3EE" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1030" cy="130" r="165" fill="#22D3EE" fill-opacity="0.16" />
+  <circle cx="180" cy="520" r="220" fill="#7EE7A8" fill-opacity="0.14" />
+
+  <rect x="88" y="86" width="1024" height="458" rx="30" fill="#0b131f" fill-opacity="0.88" stroke="url(#line)" stroke-opacity="0.7" />
+
+  <text x="144" y="250" fill="#E8FFF2" font-family="Sora, sans-serif" font-size="68" font-weight="700">
+    Henish Patel
+  </text>
+  <text x="144" y="314" fill="#7EE7A8" font-family="Sora, sans-serif" font-size="36" font-weight="500">
+    Software Engineer &amp; AI/Data Systems Builder
+  </text>
+  <text x="144" y="390" fill="#A7B4C7" font-family="Manrope, sans-serif" font-size="30" font-weight="500">
+    Full-stack systems • Data engineering • ML infrastructure
+  </text>
+</svg>
