@@ -70,7 +70,7 @@ function App() {
         style={{ scaleX: progressBar }}
       />
 
-      <TechyBackground scrollYProgress={scrollYProgress} />
+      <TechyBackground />
 
       <Navbar navigation={navigation} activeSection={activeSection} name={personalInfo.name} />
 

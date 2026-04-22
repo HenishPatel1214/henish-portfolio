@@ -13,7 +13,8 @@ html {
 }
 
 body {
-  @apply m-0 bg-page font-body text-indigo-50 antialiased;
+  @apply m-0 font-body text-indigo-50 antialiased;
+  background-color: #050505;
 }
 
 #root {
@@ -21,175 +22,90 @@ body {
 }
 
 ::selection {
-  @apply bg-brand-400/40 text-indigo-50;
+  @apply text-indigo-50;
+  background-color: rgba(0, 255, 136, 0.28);
 }
 
-@keyframes topoDriftA {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-
-  12% {
-    transform: translate3d(-2.4%, 1.8%, 0) rotate(0.2deg) scale(1.006);
-  }
-
-  28% {
-    transform: translate3d(-5.6%, 3.8%, 0) rotate(0.55deg) scale(1.012);
-  }
-
-  42% {
-    transform: translate3d(-6.8%, 5.4%, 0) rotate(0.9deg) scale(1.018);
-  }
-
-  58% {
-    transform: translate3d(-5.2%, 4.2%, 0) rotate(0.6deg) scale(1.012);
-  }
-
-  74% {
-    transform: translate3d(-2.6%, 1.6%, 0) rotate(0.25deg) scale(1.006);
-  }
-
-  88% {
-    transform: translate3d(-0.8%, 0.4%, 0) rotate(0.08deg) scale(1.002);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-}
-
-@keyframes topoDriftB {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-
-  14% {
-    transform: translate3d(2.2%, -1.4%, 0) rotate(-0.2deg) scale(1.005);
-  }
-
-  30% {
-    transform: translate3d(5%, -3%, 0) rotate(-0.5deg) scale(1.012);
-  }
-
-  46% {
-    transform: translate3d(6.6%, -5%, 0) rotate(-0.8deg) scale(1.018);
-  }
-
-  62% {
-    transform: translate3d(5.2%, -4%, 0) rotate(-0.55deg) scale(1.012);
-  }
-
-  78% {
-    transform: translate3d(2.8%, -2%, 0) rotate(-0.25deg) scale(1.005);
-  }
-
-  92% {
-    transform: translate3d(0.6%, -0.4%, 0) rotate(-0.06deg) scale(1.002);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-}
-
-@keyframes topoDriftC {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-
-  20% {
-    transform: translate3d(1.8%, 2.4%, 0) rotate(0.3deg);
-  }
-
-  40% {
-    transform: translate3d(-2.2%, 4.2%, 0) rotate(-0.4deg);
-  }
-
-  60% {
-    transform: translate3d(-3.6%, 1.4%, 0) rotate(-0.3deg);
-  }
-
-  80% {
-    transform: translate3d(-1.2%, -1.8%, 0) rotate(0.2deg);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-}
-
-@keyframes topoPulse {
-  0%, 100% {
-    opacity: 0.7;
-  }
-
-  35% {
-    opacity: 0.95;
-  }
-
-  65% {
-    opacity: 1;
-  }
-}
-
-@keyframes grainShift {
+@keyframes topoNoiseDrift {
   0% {
     transform: translate3d(0, 0, 0);
   }
 
   100% {
-    transform: translate3d(28px, 18px, 0);
+    transform: translate3d(24px, 14px, 0);
   }
 }
 
-@layer utilities {
-  .ln-topo-base {
-    background:
-      radial-gradient(120% 90% at 15% 10%, rgba(14, 116, 144, 0.28), transparent 55%),
-      radial-gradient(120% 90% at 85% 20%, rgba(56, 189, 248, 0.14), transparent 55%),
-      radial-gradient(140% 110% at 50% 110%, rgba(8, 47, 73, 0.7), transparent 60%),
-      linear-gradient(176deg, #04091a 0%, #061229 50%, #04112a 100%);
-  }
+.topo-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
-  .ln-topo-svg {
-    position: absolute;
-    left: -6%;
-    top: -6%;
-    width: 112%;
-    height: 112%;
-  }
+.topo-noise-overlay {
+  background-image: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0.45px, transparent 0.6px);
+  background-size: 2.6px 2.6px;
+  mix-blend-mode: soft-light;
+  opacity: 0.12;
+  animation: topoNoiseDrift 26s linear infinite;
+}
 
-  .ln-topo-far {
-    opacity: 0.75;
-    animation:
-      topoDriftA 22s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite,
-      topoPulse 11s ease-in-out infinite;
-    will-change: transform, opacity;
-  }
+.topo-controls {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: min(17rem, calc(100% - 2rem));
+  border: 1px solid rgba(0, 255, 136, 0.28);
+  background: rgba(7, 12, 10, 0.78);
+  backdrop-filter: blur(14px);
+  border-radius: 0.95rem;
+  padding: 0.82rem;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+}
 
-  .ln-topo-mid {
-    opacity: 0.9;
-    animation:
-      topoDriftB 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite,
-      topoDriftC 27s ease-in-out infinite;
-    will-change: transform;
-  }
+.topo-controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.55rem;
+}
 
-  .ln-topo-near {
-    opacity: 1;
-    animation: topoDriftA 11s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-    will-change: transform;
-  }
+.topo-controls-header span {
+  font-size: 0.67rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(157, 255, 211, 0.92);
+  font-weight: 600;
+}
 
-  .ln-topo-grain {
-    background-image: radial-gradient(circle, rgba(186, 230, 253, 0.1) 0.6px, transparent 0.6px);
-    background-size: 3.2px 3.2px;
-    opacity: 0.16;
-    mix-blend-mode: soft-light;
-    animation: grainShift 16s linear infinite;
-  }
+.topo-controls-header button {
+  border: 1px solid rgba(0, 255, 136, 0.32);
+  border-radius: 9999px;
+  padding: 0.18rem 0.54rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(167, 255, 219, 0.94);
+  background: rgba(0, 0, 0, 0.28);
+}
 
-  .ln-topo-vignette {
-    background: radial-gradient(circle at center, transparent 40%, rgba(2, 6, 18, 0.82) 100%);
-  }
+.topo-control {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.42rem;
+}
+
+.topo-control span {
+  font-size: 0.63rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(181, 198, 188, 0.8);
+}
+
+.topo-control input[type='range'] {
+  width: 100%;
+  accent-color: #00ff88;
+  filter: saturate(0.85);
 }

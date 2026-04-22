@@ -1,86 +1,490 @@
-import { motion as Motion, useTransform } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
-const CONTOUR_STROKE = 'rgba(125, 211, 252, 0.42)'
-const CONTOUR_STROKE_SOFT = 'rgba(125, 211, 252, 0.26)'
-const CONTOUR_STROKE_FAINT = 'rgba(103, 232, 249, 0.2)'
+const DEFAULT_TWEAKS = {
+  speed: 0.055,
+  contourCount: 12,
+  cellSize: 34,
+  noiseScale: 0.0085,
+  warp: 0.34,
+  lineWidth: 0.58,
+  glow: 3.8,
+  accentEvery: 4,
+  baseAlpha: 0.12,
+  accentAlpha: 0.28,
+}
 
-export default function TechyBackground({ scrollYProgress }) {
-  const farX = useTransform(scrollYProgress, [0, 1], [0, -140])
-  const farY = useTransform(scrollYProgress, [0, 1], [0, 220])
-  const midX = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const midY = useTransform(scrollYProgress, [0, 1], [0, -260])
-  const nearX = useTransform(scrollYProgress, [0, 1], [0, -300])
-  const nearY = useTransform(scrollYProgress, [0, 1], [0, 340])
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value))
+}
+
+function createSeededRandom(seed) {
+  let current = seed >>> 0
+
+  return function next() {
+    current += 0x6d2b79f5
+    let value = Math.imul(current ^ (current >>> 15), 1 | current)
+    value ^= value + Math.imul(value ^ (value >>> 7), 61 | value)
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+class PerlinNoise2D {
+  constructor(seed = 1) {
+    const random = createSeededRandom(seed)
+    const table = new Uint16Array(256)
+
+    for (let i = 0; i < 256; i += 1) {
+      table[i] = i
+    }
+
+    for (let i = 255; i > 0; i -= 1) {
+      const j = Math.floor(random() * (i + 1))
+      const temp = table[i]
+      table[i] = table[j]
+      table[j] = temp
+    }
+
+    this.permutation = new Uint16Array(512)
+    for (let i = 0; i < 512; i += 1) {
+      this.permutation[i] = table[i & 255]
+    }
+  }
+
+  static fade(value) {
+    return value * value * value * (value * (value * 6 - 15) + 10)
+  }
+
+  static lerp(a, b, t) {
+    return a + (b - a) * t
+  }
+
+  static gradient(hash, x, y) {
+    const h = hash & 7
+    const u = h < 4 ? x : y
+    const v = h < 4 ? y : x
+    const first = (h & 1) === 0 ? u : -u
+    const second = (h & 2) === 0 ? v : -v
+    return first + second
+  }
+
+  noise(x, y) {
+    const xi = Math.floor(x) & 255
+    const yi = Math.floor(y) & 255
+    const xf = x - Math.floor(x)
+    const yf = y - Math.floor(y)
+
+    const u = PerlinNoise2D.fade(xf)
+    const v = PerlinNoise2D.fade(yf)
+
+    const aa = this.permutation[this.permutation[xi] + yi]
+    const ab = this.permutation[this.permutation[xi] + yi + 1]
+    const ba = this.permutation[this.permutation[xi + 1] + yi]
+    const bb = this.permutation[this.permutation[xi + 1] + yi + 1]
+
+    const x1 = PerlinNoise2D.lerp(
+      PerlinNoise2D.gradient(aa, xf, yf),
+      PerlinNoise2D.gradient(ba, xf - 1, yf),
+      u,
+    )
+    const x2 = PerlinNoise2D.lerp(
+      PerlinNoise2D.gradient(ab, xf, yf - 1),
+      PerlinNoise2D.gradient(bb, xf - 1, yf - 1),
+      u,
+    )
+
+    return PerlinNoise2D.lerp(x1, x2, v)
+  }
+}
+
+function buildRgba([red, green, blue], alpha) {
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+}
+
+export default function TechyBackground() {
+  const canvasRef = useRef(null)
+  const settingsRef = useRef(DEFAULT_TWEAKS)
+  const [tweaks, setTweaks] = useState(DEFAULT_TWEAKS)
+  const [showControls, setShowControls] = useState(() => {
+    if (typeof window === 'undefined') {
+      return false
+    }
+
+    return new URLSearchParams(window.location.search).has('bg-controls')
+  })
+
+  useEffect(() => {
+    settingsRef.current = tweaks
+  }, [tweaks])
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.shiftKey && event.key.toLowerCase() === 't') {
+        setShowControls((current) => !current)
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) {
+      return undefined
+    }
+
+    const context = canvas.getContext('2d', {
+      alpha: true,
+      desynchronized: true,
+    })
+    if (!context) {
+      return undefined
+    }
+
+    const noise = new PerlinNoise2D(114735)
+    const baseColor = [116, 130, 122]
+    const accentColor = [0, 255, 136]
+    const levelMin = -0.82
+    const levelMax = 0.82
+
+    let width = 0
+    let height = 0
+    let stride = 0
+    let columns = 0
+    let rows = 0
+    let activeCellSize = settingsRef.current.cellSize
+    let field = new Float32Array(0)
+    let animationId = 0
+    let previousTime = performance.now()
+    let time = 0
+
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let prefersReducedMotion = motionQuery.matches
+    const onMotionPreferenceChange = (event) => {
+      prefersReducedMotion = event.matches
+    }
+
+    if (motionQuery.addEventListener) {
+      motionQuery.addEventListener('change', onMotionPreferenceChange)
+    } else {
+      motionQuery.addListener(onMotionPreferenceChange)
+    }
+
+    const interpolate = (target, a, b) => {
+      const delta = b - a
+      if (Math.abs(delta) < 1e-6) {
+        return 0.5
+      }
+      return clamp((target - a) / delta, 0, 1)
+    }
+
+    const rebuildGrid = (cellSize) => {
+      activeCellSize = cellSize
+      columns = Math.ceil(width / activeCellSize)
+      rows = Math.ceil(height / activeCellSize)
+      stride = columns + 1
+      field = new Float32Array((columns + 1) * (rows + 1))
+    }
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect()
+      width = Math.max(1, Math.floor(rect.width))
+      height = Math.max(1, Math.floor(rect.height))
+
+      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.floor(width * ratio)
+      canvas.height = Math.floor(height * ratio)
+      canvas.style.width = `${width}px`
+      canvas.style.height = `${height}px`
+      context.setTransform(ratio, 0, 0, ratio, 0, 0)
+
+      rebuildGrid(settingsRef.current.cellSize)
+    }
+
+    const sampleNoise = (x, y, t, settings) => {
+      const flowX = noise.noise(x * 0.74 + t * 0.038, y * 0.74 - t * 0.03)
+      const flowY = noise.noise(x * 0.74 - t * 0.034, y * 0.74 + t * 0.04)
+
+      let value = 0
+      let amplitude = 0.62
+      let frequency = 1
+
+      for (let octave = 0; octave < 3; octave += 1) {
+        const warpedX = x * frequency + flowX * settings.warp
+        const warpedY = y * frequency + flowY * settings.warp
+        const movementX = t * 0.05 * frequency
+        const movementY = t * 0.043 * frequency
+
+        value += amplitude * noise.noise(warpedX + movementX, warpedY - movementY)
+        amplitude *= 0.5
+        frequency *= 1.94
+      }
+
+      return value
+    }
+
+    const sampleField = (t, settings) => {
+      for (let y = 0; y <= rows; y += 1) {
+        const yBase = y * activeCellSize * settings.noiseScale
+        const rowOffset = y * stride
+
+        for (let x = 0; x <= columns; x += 1) {
+          const xBase = x * activeCellSize * settings.noiseScale
+          field[rowOffset + x] = sampleNoise(xBase, yBase, t, settings)
+        }
+      }
+    }
+
+    const traceContour = (level) => {
+      context.beginPath()
+
+      for (let y = 0; y < rows; y += 1) {
+        const rowOffset = y * stride
+
+        for (let x = 0; x < columns; x += 1) {
+          const index = rowOffset + x
+          const valueTopLeft = field[index]
+          const valueTopRight = field[index + 1]
+          const valueBottomRight = field[index + stride + 1]
+          const valueBottomLeft = field[index + stride]
+
+          const state =
+            (valueTopLeft >= level ? 1 : 0) |
+            (valueTopRight >= level ? 2 : 0) |
+            (valueBottomRight >= level ? 4 : 0) |
+            (valueBottomLeft >= level ? 8 : 0)
+
+          if (state === 0 || state === 15) {
+            continue
+          }
+
+          const cellX = x * activeCellSize
+          const cellY = y * activeCellSize
+
+          const topT = interpolate(level, valueTopLeft, valueTopRight)
+          const rightT = interpolate(level, valueTopRight, valueBottomRight)
+          const bottomT = interpolate(level, valueBottomRight, valueBottomLeft)
+          const leftT = interpolate(level, valueBottomLeft, valueTopLeft)
+
+          const e0x = cellX + topT * activeCellSize
+          const e0y = cellY
+          const e1x = cellX + activeCellSize
+          const e1y = cellY + rightT * activeCellSize
+          const e2x = cellX + activeCellSize - bottomT * activeCellSize
+          const e2y = cellY + activeCellSize
+          const e3x = cellX
+          const e3y = cellY + activeCellSize - leftT * activeCellSize
+
+          switch (state) {
+            case 1:
+            case 14:
+              context.moveTo(e3x, e3y)
+              context.lineTo(e0x, e0y)
+              break
+            case 2:
+            case 13:
+              context.moveTo(e0x, e0y)
+              context.lineTo(e1x, e1y)
+              break
+            case 3:
+            case 12:
+              context.moveTo(e3x, e3y)
+              context.lineTo(e1x, e1y)
+              break
+            case 4:
+            case 11:
+              context.moveTo(e1x, e1y)
+              context.lineTo(e2x, e2y)
+              break
+            case 5:
+              context.moveTo(e3x, e3y)
+              context.lineTo(e2x, e2y)
+              context.moveTo(e0x, e0y)
+              context.lineTo(e1x, e1y)
+              break
+            case 6:
+            case 9:
+              context.moveTo(e0x, e0y)
+              context.lineTo(e2x, e2y)
+              break
+            case 7:
+            case 8:
+              context.moveTo(e3x, e3y)
+              context.lineTo(e2x, e2y)
+              break
+            case 10:
+              context.moveTo(e0x, e0y)
+              context.lineTo(e3x, e3y)
+              context.moveTo(e1x, e1y)
+              context.lineTo(e2x, e2y)
+              break
+            default:
+              break
+          }
+        }
+      }
+
+      context.stroke()
+    }
+
+    const draw = (t) => {
+      const settings = settingsRef.current
+      const roundedCellSize = Math.round(settings.cellSize)
+      if (roundedCellSize !== activeCellSize) {
+        rebuildGrid(roundedCellSize)
+      }
+
+      context.clearRect(0, 0, width, height)
+      context.fillStyle = '#050505'
+      context.fillRect(0, 0, width, height)
+
+      sampleField(t, settings)
+
+      const levelCount = Math.round(settings.contourCount)
+      const levelStep = (levelMax - levelMin) / Math.max(1, levelCount - 1)
+
+      context.lineCap = 'round'
+      context.lineJoin = 'round'
+
+      for (let i = 0; i < levelCount; i += 1) {
+        const level = levelMin + i * levelStep
+        const accent = i % settings.accentEvery === 0
+
+        context.lineWidth = accent ? settings.lineWidth * 1.06 : settings.lineWidth
+        context.strokeStyle = accent
+          ? buildRgba(accentColor, settings.accentAlpha)
+          : buildRgba(baseColor, settings.baseAlpha)
+        context.shadowBlur = accent ? settings.glow : 0
+        context.shadowColor = accent ? 'rgba(0, 255, 136, 0.18)' : 'transparent'
+
+        traceContour(level)
+      }
+
+      context.shadowBlur = 0
+      const vignette = context.createRadialGradient(
+        width * 0.5,
+        height * 0.5,
+        Math.min(width, height) * 0.22,
+        width * 0.5,
+        height * 0.5,
+        Math.max(width, height) * 0.88,
+      )
+      vignette.addColorStop(0, 'rgba(5, 5, 5, 0)')
+      vignette.addColorStop(1, 'rgba(5, 5, 5, 0.52)')
+      context.fillStyle = vignette
+      context.fillRect(0, 0, width, height)
+    }
+
+    const animate = (timestamp) => {
+      const deltaSeconds = Math.min(0.05, (timestamp - previousTime) / 1000)
+      previousTime = timestamp
+
+      if (!prefersReducedMotion) {
+        time += deltaSeconds * settingsRef.current.speed
+      }
+
+      draw(time)
+      animationId = requestAnimationFrame(animate)
+    }
+
+    resize()
+    animationId = requestAnimationFrame(animate)
+
+    window.addEventListener('resize', resize)
+
+    return () => {
+      cancelAnimationFrame(animationId)
+      window.removeEventListener('resize', resize)
+      if (motionQuery.removeEventListener) {
+        motionQuery.removeEventListener('change', onMotionPreferenceChange)
+      } else {
+        motionQuery.removeListener(onMotionPreferenceChange)
+      }
+    }
+  }, [])
+
+  const updateTweak = (key, value) => {
+    setTweaks((current) => ({
+      ...current,
+      [key]: value,
+    }))
+  }
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 ln-topo-base" />
+      <canvas ref={canvasRef} className="topo-canvas" aria-hidden="true" />
+      <div className="absolute inset-0 topo-noise-overlay" />
 
-      <Motion.svg
-        viewBox="0 0 2000 1400"
-        preserveAspectRatio="xMidYMid slice"
-        className="ln-topo-svg ln-topo-far"
-        style={{ x: farX, y: farY }}
-        aria-hidden="true"
-      >
-        <g stroke={CONTOUR_STROKE_FAINT} fill="none" strokeWidth="1.1">
-          <path d="M 780 -60 C 900 -110, 1120 -110, 1260 -50 C 1360 -10, 1380 70, 1300 130 C 1180 200, 940 200, 820 140 C 680 80, 680 -10, 780 -60 Z" />
-          <path d="M 820 -30 C 920 -70, 1110 -70, 1230 -20 C 1310 20, 1330 80, 1270 130 C 1170 180, 960 180, 860 130 C 740 80, 740 10, 820 -30 Z" />
-          <path d="M 860 0 C 940 -30, 1090 -30, 1190 10 C 1260 40, 1280 80, 1230 120 C 1150 160, 990 160, 900 120 C 810 90, 800 40, 860 0 Z" />
-        </g>
-        <g stroke={CONTOUR_STROKE_FAINT} fill="none" strokeWidth="1.1">
-          <path d="M 1300 1200 C 1420 1140, 1640 1140, 1800 1200 C 1920 1260, 1960 1360, 1880 1440 C 1760 1540, 1540 1540, 1400 1480 C 1240 1400, 1200 1280, 1300 1200 Z" />
-          <path d="M 1340 1230 C 1440 1180, 1620 1180, 1760 1230 C 1860 1280, 1900 1360, 1840 1420 C 1740 1500, 1560 1500, 1440 1450 C 1300 1390, 1270 1290, 1340 1230 Z" />
-        </g>
-      </Motion.svg>
+      {showControls ? (
+        <aside className="topo-controls pointer-events-auto">
+          <header className="topo-controls-header">
+            <span>Background Tweaks</span>
+            <button type="button" onClick={() => setShowControls(false)}>
+              Hide
+            </button>
+          </header>
 
-      <Motion.svg
-        viewBox="0 0 2000 1400"
-        preserveAspectRatio="xMidYMid slice"
-        className="ln-topo-svg ln-topo-mid"
-        style={{ x: midX, y: midY }}
-        aria-hidden="true"
-      >
-        <g stroke={CONTOUR_STROKE_SOFT} fill="none" strokeWidth="1.3">
-          <path d="M 80 260 C 150 130, 340 100, 490 180 C 620 250, 660 400, 570 520 C 470 640, 260 640, 140 530 C 10 410, 10 370, 80 260 Z" />
-          <path d="M 140 290 C 200 190, 340 170, 460 230 C 570 290, 600 410, 530 500 C 450 600, 290 600, 190 510 C 90 420, 90 370, 140 290 Z" />
-          <path d="M 200 320 C 240 250, 340 240, 430 280 C 510 320, 540 400, 500 470 C 450 540, 340 550, 260 500 C 180 450, 160 390, 200 320 Z" />
-          <path d="M 250 350 C 280 310, 350 300, 410 320 C 470 340, 490 390, 470 430 C 440 480, 360 490, 300 470 C 230 440, 220 390, 250 350 Z" />
-        </g>
+          <label className="topo-control">
+            <span>Speed</span>
+            <input
+              type="range"
+              min="0.02"
+              max="0.12"
+              step="0.005"
+              value={tweaks.speed}
+              onChange={(event) => updateTweak('speed', Number(event.target.value))}
+            />
+          </label>
 
-        <g stroke={CONTOUR_STROKE_SOFT} fill="none" strokeWidth="1.3">
-          <path d="M 1380 180 C 1470 80, 1660 80, 1800 200 C 1920 310, 1960 470, 1880 590 C 1780 720, 1580 720, 1440 610 C 1280 480, 1280 290, 1380 180 Z" />
-          <path d="M 1430 230 C 1510 150, 1650 150, 1770 250 C 1870 340, 1900 470, 1830 580 C 1740 680, 1580 680, 1480 590 C 1350 490, 1350 310, 1430 230 Z" />
-          <path d="M 1480 280 C 1540 220, 1640 220, 1730 290 C 1810 350, 1840 450, 1790 540 C 1720 620, 1600 620, 1520 560 C 1420 500, 1420 350, 1480 280 Z" />
-          <path d="M 1530 320 C 1580 280, 1650 280, 1710 325 C 1770 370, 1790 440, 1760 510 C 1710 580, 1620 580, 1560 535 C 1480 480, 1480 370, 1530 320 Z" />
-        </g>
+          <label className="topo-control">
+            <span>Density</span>
+            <input
+              type="range"
+              min="8"
+              max="18"
+              step="1"
+              value={tweaks.contourCount}
+              onChange={(event) => updateTweak('contourCount', Number(event.target.value))}
+            />
+          </label>
 
-        <g stroke={CONTOUR_STROKE_SOFT} fill="none" strokeWidth="1.3">
-          <path d="M 40 880 C 140 760, 350 760, 480 850 C 590 930, 610 1080, 510 1180 C 400 1290, 220 1280, 110 1200 C -40 1080, -40 980, 40 880 Z" />
-          <path d="M 100 910 C 180 830, 340 830, 450 900 C 550 970, 570 1080, 490 1160 C 400 1240, 250 1240, 150 1180 C 20 1080, 20 990, 100 910 Z" />
-          <path d="M 160 940 C 220 880, 330 880, 420 940 C 510 1000, 530 1080, 460 1140 C 390 1200, 270 1200, 190 1150 C 80 1080, 80 1000, 160 940 Z" />
-          <path d="M 210 970 C 260 920, 320 920, 390 960 C 460 1000, 480 1050, 430 1100 C 380 1150, 290 1150, 230 1120 C 150 1080, 150 1020, 210 970 Z" />
-        </g>
-      </Motion.svg>
+          <label className="topo-control">
+            <span>Scale</span>
+            <input
+              type="range"
+              min="0.005"
+              max="0.014"
+              step="0.0005"
+              value={tweaks.noiseScale}
+              onChange={(event) => updateTweak('noiseScale', Number(event.target.value))}
+            />
+          </label>
 
-      <Motion.svg
-        viewBox="0 0 2000 1400"
-        preserveAspectRatio="xMidYMid slice"
-        className="ln-topo-svg ln-topo-near"
-        style={{ x: nearX, y: nearY }}
-        aria-hidden="true"
-      >
-        <g stroke={CONTOUR_STROKE} fill="none" strokeWidth="1.4">
-          <path d="M 900 520 C 1020 420, 1220 420, 1360 510 C 1480 590, 1510 740, 1420 850 C 1310 980, 1110 990, 980 900 C 830 790, 810 620, 900 520 Z" />
-          <path d="M 950 560 C 1050 480, 1210 480, 1330 550 C 1430 620, 1460 740, 1390 830 C 1290 940, 1130 940, 1020 870 C 890 780, 880 650, 950 560 Z" />
-          <path d="M 1000 600 C 1080 540, 1200 540, 1300 590 C 1380 640, 1410 730, 1360 800 C 1280 880, 1150 880, 1060 830 C 950 770, 950 680, 1000 600 Z" />
-          <path d="M 1050 640 C 1110 600, 1190 600, 1270 630 C 1340 660, 1370 720, 1330 770 C 1280 830, 1180 830, 1110 800 C 1020 760, 1020 700, 1050 640 Z" />
-          <path d="M 1100 680 C 1140 650, 1200 650, 1250 670 C 1300 690, 1320 730, 1290 770 C 1260 810, 1190 810, 1150 790 C 1080 760, 1080 720, 1100 680 Z" />
-        </g>
-      </Motion.svg>
+          <label className="topo-control">
+            <span>Glow</span>
+            <input
+              type="range"
+              min="0"
+              max="8"
+              step="0.2"
+              value={tweaks.glow}
+              onChange={(event) => updateTweak('glow', Number(event.target.value))}
+            />
+          </label>
 
-      <div className="absolute inset-0 ln-topo-grain" />
-      <div className="absolute inset-0 ln-topo-vignette" />
+          <label className="topo-control">
+            <span>Line Width</span>
+            <input
+              type="range"
+              min="0.3"
+              max="1.1"
+              step="0.02"
+              value={tweaks.lineWidth}
+              onChange={(event) => updateTweak('lineWidth', Number(event.target.value))}
+            />
+          </label>
+        </aside>
+      ) : null}
     </div>
   )
 }
