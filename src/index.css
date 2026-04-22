@@ -23,17 +23,7 @@ body {
 
 ::selection {
   @apply text-brand-50;
-  background-color: rgba(0, 255, 136, 0.28);
-}
-
-@keyframes topoNoiseDrift {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(24px, 14px, 0);
-  }
+  background-color: rgba(255, 255, 255, 0.24);
 }
 
 .topo-canvas {
@@ -42,70 +32,6 @@ body {
   display: block;
 }
 
-.topo-noise-overlay {
-  background-image: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0.45px, transparent 0.6px);
-  background-size: 2.6px 2.6px;
-  mix-blend-mode: soft-light;
-  opacity: 0.12;
-  animation: topoNoiseDrift 26s linear infinite;
-}
-
-.topo-controls {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  width: min(17rem, calc(100% - 2rem));
-  border: 1px solid rgba(0, 255, 136, 0.28);
-  background: rgba(7, 12, 10, 0.78);
-  backdrop-filter: blur(14px);
-  border-radius: 0.95rem;
-  padding: 0.82rem;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
-}
-
-.topo-controls-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.55rem;
-}
-
-.topo-controls-header span {
-  font-size: 0.67rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(157, 255, 211, 0.92);
-  font-weight: 600;
-}
-
-.topo-controls-header button {
-  border: 1px solid rgba(0, 255, 136, 0.32);
-  border-radius: 9999px;
-  padding: 0.18rem 0.54rem;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(167, 255, 219, 0.94);
-  background: rgba(0, 0, 0, 0.28);
-}
-
-.topo-control {
-  display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 0.42rem;
-}
-
-.topo-control span {
-  font-size: 0.63rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(181, 198, 188, 0.8);
-}
-
-.topo-control input[type='range'] {
-  width: 100%;
-  accent-color: #00ff88;
-  filter: saturate(0.85);
+.topo-vignette {
+  background: radial-gradient(circle at 50% 42%, rgba(5, 5, 5, 0) 26%, rgba(5, 5, 5, 0.42) 100%);
 }

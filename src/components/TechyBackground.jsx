@@ -1,40 +1,82 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
-const DEFAULT_TWEAKS = {
-  speed: 0.086,
-  contourCount: 16,
-  cellSize: 28,
-  noiseScale: 0.0092,
-  warp: 0.41,
-  lineWidth: 0.56,
-  glow: 4.6,
-  accentEvery: 3,
-  baseAlpha: 0.17,
-  accentAlpha: 0.36,
+/*
+  Single source of truth for all visual/motion behavior.
+  Matches the standalone contour-bg file defaults/ranges.
+*/
+const TOPO_CONFIG = {
+  speed: 1, // 0..200
+  density: 6, // 6..36
+  scale: 260, // 40..260 (pixels)
+  glow: 30, // 0..30
+  lineWidth: 32, // 20..180 (x0.01 => 0.32px default)
+  mouseWarp: 15, // 0..100
+  palette: 'white', // white | green | cyan | amber | magenta
+  cellSize: 12,
+  background: '#050505',
 }
 
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value))
+const PALETTES = {
+  white: {
+    base: [230, 230, 230],
+    accent: [255, 255, 255],
+    glow: [255, 255, 255],
+    baseAlpha: 0.16,
+    accentAlpha: 0.32,
+  },
+  green: {
+    base: [100, 236, 172],
+    accent: [140, 255, 200],
+    glow: [86, 255, 180],
+    baseAlpha: 0.15,
+    accentAlpha: 0.34,
+  },
+  cyan: {
+    base: [120, 220, 255],
+    accent: [170, 244, 255],
+    glow: [100, 228, 255],
+    baseAlpha: 0.15,
+    accentAlpha: 0.34,
+  },
+  amber: {
+    base: [255, 204, 140],
+    accent: [255, 227, 172],
+    glow: [255, 196, 118],
+    baseAlpha: 0.16,
+    accentAlpha: 0.33,
+  },
+  magenta: {
+    base: [240, 170, 255],
+    accent: [250, 205, 255],
+    glow: [232, 150, 255],
+    baseAlpha: 0.15,
+    accentAlpha: 0.34,
+  },
 }
 
-function createSeededRandom(seed) {
-  let current = seed >>> 0
+/*
+  Compact 2D simplex noise implementation (public-domain style port).
+  Adapted from Stefan Gustavson's widely used simplex approach.
+*/
+class Simplex2D {
+  constructor(seed = 1337) {
+    this.grad3 = new Float32Array([
+      1, 1, -1, 1, 1, -1, -1, -1,
+      1, 0, -1, 0, 1, 0, -1, 0,
+      0, 1, 0, -1, 0, 1, 0, -1,
+    ])
 
-  return function next() {
-    current += 0x6d2b79f5
-    let value = Math.imul(current ^ (current >>> 15), 1 | current)
-    value ^= value + Math.imul(value ^ (value >>> 7), 61 | value)
-    return ((value ^ (value >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-class PerlinNoise2D {
-  constructor(seed = 1) {
-    const random = createSeededRandom(seed)
-    const table = new Uint16Array(256)
-
+    const table = new Uint8Array(256)
     for (let i = 0; i < 256; i += 1) {
       table[i] = i
+    }
+
+    let current = seed >>> 0
+    const random = () => {
+      current += 0x6d2b79f5
+      let value = Math.imul(current ^ (current >>> 15), 1 | current)
+      value ^= value + Math.imul(value ^ (value >>> 7), 61 | value)
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296
     }
 
     for (let i = 255; i > 0; i -= 1) {
@@ -44,88 +86,94 @@ class PerlinNoise2D {
       table[j] = temp
     }
 
-    this.permutation = new Uint16Array(512)
+    this.perm = new Uint8Array(512)
+    this.permMod12 = new Uint8Array(512)
     for (let i = 0; i < 512; i += 1) {
-      this.permutation[i] = table[i & 255]
+      this.perm[i] = table[i & 255]
+      this.permMod12[i] = this.perm[i] % 12
     }
   }
 
-  static fade(value) {
-    return value * value * value * (value * (value * 6 - 15) + 10)
-  }
+  noise2D(x, y) {
+    const F2 = 0.5 * (Math.sqrt(3) - 1)
+    const G2 = (3 - Math.sqrt(3)) / 6
 
-  static lerp(a, b, t) {
-    return a + (b - a) * t
-  }
+    const skew = (x + y) * F2
+    const i = Math.floor(x + skew)
+    const j = Math.floor(y + skew)
 
-  static gradient(hash, x, y) {
-    const h = hash & 7
-    const u = h < 4 ? x : y
-    const v = h < 4 ? y : x
-    const first = (h & 1) === 0 ? u : -u
-    const second = (h & 2) === 0 ? v : -v
-    return first + second
-  }
+    const unskew = (i + j) * G2
+    const X0 = i - unskew
+    const Y0 = j - unskew
+    const x0 = x - X0
+    const y0 = y - Y0
 
-  noise(x, y) {
-    const xi = Math.floor(x) & 255
-    const yi = Math.floor(y) & 255
-    const xf = x - Math.floor(x)
-    const yf = y - Math.floor(y)
+    let i1 = 0
+    let j1 = 0
+    if (x0 > y0) {
+      i1 = 1
+    } else {
+      j1 = 1
+    }
 
-    const u = PerlinNoise2D.fade(xf)
-    const v = PerlinNoise2D.fade(yf)
+    const x1 = x0 - i1 + G2
+    const y1 = y0 - j1 + G2
+    const x2 = x0 - 1 + 2 * G2
+    const y2 = y0 - 1 + 2 * G2
 
-    const aa = this.permutation[this.permutation[xi] + yi]
-    const ab = this.permutation[this.permutation[xi] + yi + 1]
-    const ba = this.permutation[this.permutation[xi + 1] + yi]
-    const bb = this.permutation[this.permutation[xi + 1] + yi + 1]
+    const ii = i & 255
+    const jj = j & 255
 
-    const x1 = PerlinNoise2D.lerp(
-      PerlinNoise2D.gradient(aa, xf, yf),
-      PerlinNoise2D.gradient(ba, xf - 1, yf),
-      u,
-    )
-    const x2 = PerlinNoise2D.lerp(
-      PerlinNoise2D.gradient(ab, xf, yf - 1),
-      PerlinNoise2D.gradient(bb, xf - 1, yf - 1),
-      u,
-    )
+    const gi0 = this.permMod12[ii + this.perm[jj]] * 2
+    const gi1 = this.permMod12[ii + i1 + this.perm[jj + j1]] * 2
+    const gi2 = this.permMod12[ii + 1 + this.perm[jj + 1]] * 2
 
-    return PerlinNoise2D.lerp(x1, x2, v)
+    const grad3 = this.grad3
+
+    let n0 = 0
+    let n1 = 0
+    let n2 = 0
+
+    let t0 = 0.5 - x0 * x0 - y0 * y0
+    if (t0 >= 0) {
+      t0 *= t0
+      n0 = t0 * t0 * (grad3[gi0] * x0 + grad3[gi0 + 1] * y0)
+    }
+
+    let t1 = 0.5 - x1 * x1 - y1 * y1
+    if (t1 >= 0) {
+      t1 *= t1
+      n1 = t1 * t1 * (grad3[gi1] * x1 + grad3[gi1 + 1] * y1)
+    }
+
+    let t2 = 0.5 - x2 * x2 - y2 * y2
+    if (t2 >= 0) {
+      t2 *= t2
+      n2 = t2 * t2 * (grad3[gi2] * x2 + grad3[gi2 + 1] * y2)
+    }
+
+    return 70 * (n0 + n1 + n2)
   }
 }
 
-function buildRgba([red, green, blue], alpha) {
-  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value))
+}
+
+function toRgba(rgb, alpha) {
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`
+}
+
+function interpolateEdge(iso, a, b) {
+  const delta = b - a
+  if (Math.abs(delta) < 1e-6) {
+    return 0.5
+  }
+  return clamp((iso - a) / delta, 0, 1)
 }
 
 export default function TechyBackground() {
   const canvasRef = useRef(null)
-  const settingsRef = useRef(DEFAULT_TWEAKS)
-  const [tweaks, setTweaks] = useState(DEFAULT_TWEAKS)
-  const [showControls, setShowControls] = useState(() => {
-    if (typeof window === 'undefined') {
-      return false
-    }
-
-    return new URLSearchParams(window.location.search).has('bg-controls')
-  })
-
-  useEffect(() => {
-    settingsRef.current = tweaks
-  }, [tweaks])
-
-  useEffect(() => {
-    const onKeyDown = (event) => {
-      if (event.shiftKey && event.key.toLowerCase() === 't') {
-        setShowControls((current) => !current)
-      }
-    }
-
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -141,27 +189,33 @@ export default function TechyBackground() {
       return undefined
     }
 
-    const noise = new PerlinNoise2D(114735)
-    const baseColor = [78, 148, 114]
-    const accentColor = [0, 255, 136]
-    const levelMin = -0.82
-    const levelMax = 0.82
+    const config = TOPO_CONFIG
+    const noise = new Simplex2D(38421)
 
     let width = 0
     let height = 0
-    let stride = 0
+    let deviceScale = 1
+
     let columns = 0
     let rows = 0
-    let activeCellSize = settingsRef.current.cellSize
+    let stride = 0
     let field = new Float32Array(0)
-    let animationId = 0
-    let previousTime = performance.now()
+
+    let rafId = 0
     let time = 0
+    let lastTimestamp = performance.now()
+
+    const pointer = {
+      active: false,
+      x: 0,
+      y: 0,
+      radius: 260,
+    }
 
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    let prefersReducedMotion = motionQuery.matches
+    let reduceMotion = motionQuery.matches
     const onMotionPreferenceChange = (event) => {
-      prefersReducedMotion = event.matches
+      reduceMotion = event.matches
     }
 
     if (motionQuery.addEventListener) {
@@ -170,153 +224,158 @@ export default function TechyBackground() {
       motionQuery.addListener(onMotionPreferenceChange)
     }
 
-    const interpolate = (target, a, b) => {
-      const delta = b - a
-      if (Math.abs(delta) < 1e-6) {
-        return 0.5
-      }
-      return clamp((target - a) / delta, 0, 1)
-    }
-
-    const rebuildGrid = (cellSize) => {
-      activeCellSize = cellSize
-      columns = Math.ceil(width / activeCellSize)
-      rows = Math.ceil(height / activeCellSize)
+    const rebuildGrid = () => {
+      columns = Math.ceil(width / config.cellSize)
+      rows = Math.ceil(height / config.cellSize)
       stride = columns + 1
       field = new Float32Array((columns + 1) * (rows + 1))
     }
 
     const resize = () => {
-      const rect = canvas.getBoundingClientRect()
-      width = Math.max(1, Math.floor(rect.width))
-      height = Math.max(1, Math.floor(rect.height))
+      width = Math.max(1, window.innerWidth)
+      height = Math.max(1, window.innerHeight)
 
-      const ratio = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = Math.floor(width * ratio)
-      canvas.height = Math.floor(height * ratio)
+      deviceScale = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.floor(width * deviceScale)
+      canvas.height = Math.floor(height * deviceScale)
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
-      context.setTransform(ratio, 0, 0, ratio, 0, 0)
 
-      rebuildGrid(settingsRef.current.cellSize)
+      context.setTransform(deviceScale, 0, 0, deviceScale, 0, 0)
+      rebuildGrid()
     }
 
-    const sampleNoise = (x, y, t, settings) => {
-      const flowX = noise.noise(x * 0.74 + t * 0.038, y * 0.74 - t * 0.03)
-      const flowY = noise.noise(x * 0.74 - t * 0.034, y * 0.74 + t * 0.04)
+    const buildField = (phase) => {
+      let minValue = Infinity
+      let maxValue = -Infinity
 
-      let value = 0
-      let amplitude = 0.62
-      let frequency = 1
+      const warpStrength = (config.mouseWarp / 100) * 140
+      const scale = Math.max(1, config.scale)
 
-      for (let octave = 0; octave < 3; octave += 1) {
-        const warpedX = x * frequency + flowX * settings.warp
-        const warpedY = y * frequency + flowY * settings.warp
-        const movementX = t * 0.05 * frequency
-        const movementY = t * 0.043 * frequency
+      for (let gy = 0; gy <= rows; gy += 1) {
+        const rowOffset = gy * stride
 
-        value += amplitude * noise.noise(warpedX + movementX, warpedY - movementY)
-        amplitude *= 0.5
-        frequency *= 1.94
-      }
+        for (let gx = 0; gx <= columns; gx += 1) {
+          let sampleX = gx * config.cellSize
+          let sampleY = gy * config.cellSize
 
-      return value
-    }
+          if (pointer.active && config.mouseWarp > 0) {
+            const dx = sampleX - pointer.x
+            const dy = sampleY - pointer.y
+            const distance = Math.hypot(dx, dy)
 
-    const sampleField = (t, settings) => {
-      for (let y = 0; y <= rows; y += 1) {
-        const yBase = y * activeCellSize * settings.noiseScale
-        const rowOffset = y * stride
+            if (distance > 0 && distance < pointer.radius) {
+              const falloff = 1 - distance / pointer.radius
+              const push = warpStrength * falloff * falloff
+              sampleX += (dx / distance) * push
+              sampleY += (dy / distance) * push
+            }
+          }
 
-        for (let x = 0; x <= columns; x += 1) {
-          const xBase = x * activeCellSize * settings.noiseScale
-          field[rowOffset + x] = sampleNoise(xBase, yBase, t, settings)
+          const nx = sampleX / scale
+          const ny = sampleY / scale
+
+          const octaveA = noise.noise2D(nx + phase * 0.42, ny - phase * 0.36)
+          const octaveB = noise.noise2D(nx * 2.15 - phase * 0.31, ny * 2.15 + phase * 0.29)
+          const value = octaveA * 0.72 + octaveB * 0.28
+
+          field[rowOffset + gx] = value
+          if (value < minValue) minValue = value
+          if (value > maxValue) maxValue = value
         }
       }
+
+      return { minValue, maxValue }
     }
 
-    const traceContour = (level) => {
+    const traceIsoLevel = (iso) => {
+      const cellSize = config.cellSize
+
       context.beginPath()
 
       for (let y = 0; y < rows; y += 1) {
-        const rowOffset = y * stride
+        const row = y * stride
+        const y0 = y * cellSize
 
         for (let x = 0; x < columns; x += 1) {
-          const index = rowOffset + x
-          const valueTopLeft = field[index]
-          const valueTopRight = field[index + 1]
-          const valueBottomRight = field[index + stride + 1]
-          const valueBottomLeft = field[index + stride]
+          const index = row + x
+
+          const v0 = field[index]
+          const v1 = field[index + 1]
+          const v2 = field[index + stride + 1]
+          const v3 = field[index + stride]
 
           const state =
-            (valueTopLeft >= level ? 1 : 0) |
-            (valueTopRight >= level ? 2 : 0) |
-            (valueBottomRight >= level ? 4 : 0) |
-            (valueBottomLeft >= level ? 8 : 0)
+            (v0 >= iso ? 1 : 0) |
+            (v1 >= iso ? 2 : 0) |
+            (v2 >= iso ? 4 : 0) |
+            (v3 >= iso ? 8 : 0)
 
           if (state === 0 || state === 15) {
             continue
           }
 
-          const cellX = x * activeCellSize
-          const cellY = y * activeCellSize
+          const x0 = x * cellSize
 
-          const topT = interpolate(level, valueTopLeft, valueTopRight)
-          const rightT = interpolate(level, valueTopRight, valueBottomRight)
-          const bottomT = interpolate(level, valueBottomRight, valueBottomLeft)
-          const leftT = interpolate(level, valueBottomLeft, valueTopLeft)
+          const tTop = interpolateEdge(iso, v0, v1)
+          const tRight = interpolateEdge(iso, v1, v2)
+          const tBottom = interpolateEdge(iso, v3, v2)
+          const tLeft = interpolateEdge(iso, v0, v3)
 
-          const e0x = cellX + topT * activeCellSize
-          const e0y = cellY
-          const e1x = cellX + activeCellSize
-          const e1y = cellY + rightT * activeCellSize
-          const e2x = cellX + activeCellSize - bottomT * activeCellSize
-          const e2y = cellY + activeCellSize
-          const e3x = cellX
-          const e3y = cellY + activeCellSize - leftT * activeCellSize
+          const eTopX = x0 + tTop * cellSize
+          const eTopY = y0
+
+          const eRightX = x0 + cellSize
+          const eRightY = y0 + tRight * cellSize
+
+          const eBottomX = x0 + tBottom * cellSize
+          const eBottomY = y0 + cellSize
+
+          const eLeftX = x0
+          const eLeftY = y0 + tLeft * cellSize
 
           switch (state) {
             case 1:
             case 14:
-              context.moveTo(e3x, e3y)
-              context.lineTo(e0x, e0y)
+              context.moveTo(eLeftX, eLeftY)
+              context.lineTo(eTopX, eTopY)
               break
             case 2:
             case 13:
-              context.moveTo(e0x, e0y)
-              context.lineTo(e1x, e1y)
+              context.moveTo(eTopX, eTopY)
+              context.lineTo(eRightX, eRightY)
               break
             case 3:
             case 12:
-              context.moveTo(e3x, e3y)
-              context.lineTo(e1x, e1y)
+              context.moveTo(eLeftX, eLeftY)
+              context.lineTo(eRightX, eRightY)
               break
             case 4:
             case 11:
-              context.moveTo(e1x, e1y)
-              context.lineTo(e2x, e2y)
+              context.moveTo(eRightX, eRightY)
+              context.lineTo(eBottomX, eBottomY)
               break
             case 5:
-              context.moveTo(e3x, e3y)
-              context.lineTo(e2x, e2y)
-              context.moveTo(e0x, e0y)
-              context.lineTo(e1x, e1y)
+              context.moveTo(eLeftX, eLeftY)
+              context.lineTo(eTopX, eTopY)
+              context.moveTo(eRightX, eRightY)
+              context.lineTo(eBottomX, eBottomY)
               break
             case 6:
             case 9:
-              context.moveTo(e0x, e0y)
-              context.lineTo(e2x, e2y)
+              context.moveTo(eTopX, eTopY)
+              context.lineTo(eBottomX, eBottomY)
               break
             case 7:
             case 8:
-              context.moveTo(e3x, e3y)
-              context.lineTo(e2x, e2y)
+              context.moveTo(eLeftX, eLeftY)
+              context.lineTo(eBottomX, eBottomY)
               break
             case 10:
-              context.moveTo(e0x, e0y)
-              context.lineTo(e3x, e3y)
-              context.moveTo(e1x, e1y)
-              context.lineTo(e2x, e2y)
+              context.moveTo(eTopX, eTopY)
+              context.lineTo(eRightX, eRightY)
+              context.moveTo(eLeftX, eLeftY)
+              context.lineTo(eBottomX, eBottomY)
               break
             default:
               break
@@ -327,74 +386,81 @@ export default function TechyBackground() {
       context.stroke()
     }
 
-    const draw = (t) => {
-      const settings = settingsRef.current
-      const roundedCellSize = Math.round(settings.cellSize)
-      if (roundedCellSize !== activeCellSize) {
-        rebuildGrid(roundedCellSize)
+    const draw = (timestamp) => {
+      const delta = Math.min(0.05, (timestamp - lastTimestamp) / 1000)
+      lastTimestamp = timestamp
+
+      if (!reduceMotion) {
+        time += delta * config.speed * 0.035
       }
 
+      const { minValue, maxValue } = buildField(time)
+
       context.clearRect(0, 0, width, height)
-      context.fillStyle = '#050505'
+      context.fillStyle = config.background
       context.fillRect(0, 0, width, height)
 
-      sampleField(t, settings)
+      const palette = PALETTES[config.palette] || PALETTES.white
+      const levels = clamp(Math.round(config.density), 2, 64)
 
-      const levelCount = Math.round(settings.contourCount)
-      const levelStep = (levelMax - levelMin) / Math.max(1, levelCount - 1)
+      const range = Math.max(1e-6, maxValue - minValue)
+      const pad = range * 0.06
+      const lo = minValue + pad
+      const hi = maxValue - pad
+      const step = (hi - lo) / Math.max(1, levels - 1)
+
+      const baseLineWidth = Math.max(0.05, config.lineWidth * 0.01)
+      const pulse = 0.93 + 0.07 * Math.sin(time * 0.85)
 
       context.lineCap = 'round'
       context.lineJoin = 'round'
 
-      for (let i = 0; i < levelCount; i += 1) {
-        const level = levelMin + i * levelStep
-        const accent = i % settings.accentEvery === 0
+      for (let i = 0; i < levels; i += 1) {
+        const iso = lo + step * i
+        const isIndexLine = i % 6 === 0
 
-        context.lineWidth = accent ? settings.lineWidth * 1.06 : settings.lineWidth
-        context.strokeStyle = accent
-          ? buildRgba(accentColor, settings.accentAlpha)
-          : buildRgba(baseColor, settings.baseAlpha)
-        context.shadowBlur = accent ? settings.glow : 0
-        context.shadowColor = accent ? 'rgba(0, 255, 136, 0.18)' : 'transparent'
+        const alpha = (isIndexLine ? palette.accentAlpha : palette.baseAlpha) * pulse
+        const color = isIndexLine ? palette.accent : palette.base
 
-        traceContour(level)
+        context.strokeStyle = toRgba(color, alpha)
+        context.lineWidth = isIndexLine ? baseLineWidth * 1.16 : baseLineWidth
+
+        const glowRadius = config.glow * 0.22
+        context.shadowBlur = isIndexLine ? glowRadius * 1.12 : glowRadius * 0.46
+        context.shadowColor = toRgba(palette.glow, isIndexLine ? 0.22 : 0.1)
+
+        traceIsoLevel(iso)
       }
 
       context.shadowBlur = 0
-      const vignette = context.createRadialGradient(
-        width * 0.5,
-        height * 0.5,
-        Math.min(width, height) * 0.22,
-        width * 0.5,
-        height * 0.5,
-        Math.max(width, height) * 0.88,
-      )
-      vignette.addColorStop(0, 'rgba(5, 5, 5, 0)')
-      vignette.addColorStop(1, 'rgba(5, 5, 5, 0.52)')
-      context.fillStyle = vignette
-      context.fillRect(0, 0, width, height)
+      rafId = requestAnimationFrame(draw)
     }
 
-    const animate = (timestamp) => {
-      const deltaSeconds = Math.min(0.05, (timestamp - previousTime) / 1000)
-      previousTime = timestamp
+    const onPointerMove = (event) => {
+      pointer.x = event.clientX
+      pointer.y = event.clientY
+      pointer.active = true
+    }
 
-      if (!prefersReducedMotion) {
-        time += deltaSeconds * settingsRef.current.speed
-      }
-
-      draw(time)
-      animationId = requestAnimationFrame(animate)
+    const onPointerLeave = () => {
+      pointer.active = false
     }
 
     resize()
-    animationId = requestAnimationFrame(animate)
+    rafId = requestAnimationFrame(draw)
 
-    window.addEventListener('resize', resize)
+    window.addEventListener('resize', resize, { passive: true })
+    window.addEventListener('mousemove', onPointerMove, { passive: true })
+    window.addEventListener('mouseleave', onPointerLeave)
+    window.addEventListener('blur', onPointerLeave)
 
     return () => {
-      cancelAnimationFrame(animationId)
+      cancelAnimationFrame(rafId)
       window.removeEventListener('resize', resize)
+      window.removeEventListener('mousemove', onPointerMove)
+      window.removeEventListener('mouseleave', onPointerLeave)
+      window.removeEventListener('blur', onPointerLeave)
+
       if (motionQuery.removeEventListener) {
         motionQuery.removeEventListener('change', onMotionPreferenceChange)
       } else {
@@ -403,88 +469,10 @@ export default function TechyBackground() {
     }
   }, [])
 
-  const updateTweak = (key, value) => {
-    setTweaks((current) => ({
-      ...current,
-      [key]: value,
-    }))
-  }
-
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <canvas ref={canvasRef} className="topo-canvas" aria-hidden="true" />
-      <div className="absolute inset-0 topo-noise-overlay" />
-
-      {showControls ? (
-        <aside className="topo-controls pointer-events-auto">
-          <header className="topo-controls-header">
-            <span>Background Tweaks</span>
-            <button type="button" onClick={() => setShowControls(false)}>
-              Hide
-            </button>
-          </header>
-
-          <label className="topo-control">
-            <span>Speed</span>
-            <input
-              type="range"
-              min="0.02"
-              max="0.16"
-              step="0.005"
-              value={tweaks.speed}
-              onChange={(event) => updateTweak('speed', Number(event.target.value))}
-            />
-          </label>
-
-          <label className="topo-control">
-            <span>Density</span>
-            <input
-              type="range"
-              min="8"
-              max="22"
-              step="1"
-              value={tweaks.contourCount}
-              onChange={(event) => updateTweak('contourCount', Number(event.target.value))}
-            />
-          </label>
-
-          <label className="topo-control">
-            <span>Scale</span>
-            <input
-              type="range"
-              min="0.005"
-              max="0.014"
-              step="0.0005"
-              value={tweaks.noiseScale}
-              onChange={(event) => updateTweak('noiseScale', Number(event.target.value))}
-            />
-          </label>
-
-          <label className="topo-control">
-            <span>Glow</span>
-            <input
-              type="range"
-              min="0"
-              max="8"
-              step="0.2"
-              value={tweaks.glow}
-              onChange={(event) => updateTweak('glow', Number(event.target.value))}
-            />
-          </label>
-
-          <label className="topo-control">
-            <span>Line Width</span>
-            <input
-              type="range"
-              min="0.3"
-              max="1.1"
-              step="0.02"
-              value={tweaks.lineWidth}
-              onChange={(event) => updateTweak('lineWidth', Number(event.target.value))}
-            />
-          </label>
-        </aside>
-      ) : null}
+      <div className="absolute inset-0 topo-vignette" aria-hidden="true" />
     </div>
   )
 }
