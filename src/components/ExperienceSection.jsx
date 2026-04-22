@@ -14,11 +14,11 @@ export default function ExperienceSection({ experiences }) {
         description="I blend product thinking with engineering depth to build systems that reduce manual effort, improve speed, and scale with team needs."
       />
 
-      <div className="relative mt-12 space-y-6 border-l border-[#1f7a59]/55 pl-7 md:pl-10">
+      <div className="relative mt-12 space-y-6 border-l border-[#3d63a7]/55 pl-7 md:pl-10">
         {experiences.map((job) => (
           <article
             key={`${job.company}-${job.role}`}
-            className="relative rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft"
+            className="relative rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 shadow-soft"
           >
             <span className="absolute -left-[38px] top-8 h-3 w-3 rounded-full border border-brand-200/80 bg-brand-300 md:-left-[45px]" />
             <p className="text-xs uppercase tracking-[0.22em] text-brand-200/80">{job.period}</p>
@@ -39,7 +39,7 @@ export default function ExperienceSection({ experiences }) {
               {job.stack.map((item) => (
                 <span
                   key={item}
-                  className="rounded-full border border-[#24936d]/55 bg-[#0f2a20] px-3 py-1 text-xs text-brand-200/90"
+                  className="rounded-full border border-[#5f84cc]/55 bg-[#18284f] px-3 py-1 text-xs text-brand-200/90"
                 >
                   {item}
                 </span>

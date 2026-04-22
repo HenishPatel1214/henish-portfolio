@@ -5,7 +5,7 @@ function StatCard({ value, label, context }) {
     <Motion.article
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      className="group rounded-2xl border border-[#1f7a59]/55 bg-[#0f2a20] p-5 shadow-soft backdrop-blur"
+      className="group rounded-2xl border border-[#3d63a7]/55 bg-[#18284f] p-5 shadow-soft backdrop-blur"
     >
       <p className="font-display text-2xl font-semibold text-brand-100">{value}</p>
       <p className="mt-1 text-sm font-semibold text-brand-50">{label}</p>
@@ -63,13 +63,13 @@ export default function HeroSection({ personalInfo, quickStats }) {
           >
             <a
               href="#projects"
-              className="inline-flex items-center rounded-full bg-brand-300 px-6 py-3 text-sm font-semibold text-[#042518] transition hover:bg-brand-200"
+              className="inline-flex items-center rounded-full bg-brand-300 px-6 py-3 text-sm font-semibold text-[#081739] transition hover:bg-brand-200"
             >
               Explore Projects
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center rounded-full border border-[#33a77e]/55 px-6 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80 hover:text-brand-50"
+              className="inline-flex items-center rounded-full border border-[#79a1df]/55 px-6 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80 hover:text-brand-50"
             >
               Contact Me
             </a>

@@ -6,7 +6,7 @@ export default function Navbar({ navigation, activeSection, name }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-[#1f7a59]/55 bg-[#0a1a14]/92 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-[#3d63a7]/55 bg-[#101c3f]/92 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 md:px-8">
         <a href="#home" className="font-display text-sm font-semibold tracking-[0.22em] text-brand-50">
           {name}
@@ -14,14 +14,14 @@ export default function Navbar({ navigation, activeSection, name }) {
 
         <button
           type="button"
-          className="rounded-md border border-[#24936d]/55 p-2 text-brand-50 transition hover:border-brand-300/60 md:hidden"
+          className="rounded-md border border-[#5f84cc]/55 p-2 text-brand-50 transition hover:border-brand-300/60 md:hidden"
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle navigation"
         >
           {isOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-[#1f7a59]/55 bg-[#0f2a20]/90 p-1 md:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-[#3d63a7]/55 bg-[#18284f]/90 p-1 md:flex">
           {navigation.map((item) => (
             <a
               key={item.id}
@@ -30,7 +30,7 @@ export default function Navbar({ navigation, activeSection, name }) {
                 'rounded-full px-4 py-2 text-sm transition',
                 activeSection === item.id
                   ? 'bg-brand-400/20 text-brand-100'
-                  : 'text-brand-200/90 hover:bg-[#114131]/90 hover:text-brand-50',
+                  : 'text-brand-200/90 hover:bg-[#2b4d90]/90 hover:text-brand-50',
               )}
             >
               {item.label}
@@ -40,7 +40,7 @@ export default function Navbar({ navigation, activeSection, name }) {
       </div>
 
       {isOpen && (
-        <nav className="border-t border-[#1f7a59]/55 bg-[#0a1d15]/95 px-5 py-4 md:hidden">
+        <nav className="border-t border-[#3d63a7]/55 bg-[#121d3d]/95 px-5 py-4 md:hidden">
           <ul className="space-y-2">
             {navigation.map((item) => (
               <li key={item.id}>
@@ -51,7 +51,7 @@ export default function Navbar({ navigation, activeSection, name }) {
                     'block rounded-lg px-3 py-2 text-sm transition',
                     activeSection === item.id
                       ? 'bg-brand-400/20 text-brand-100'
-                      : 'text-brand-200/90 hover:bg-[#114131]/90 hover:text-brand-50',
+                      : 'text-brand-200/90 hover:bg-[#2b4d90]/90 hover:text-brand-50',
                   )}
                 >
                   {item.label}

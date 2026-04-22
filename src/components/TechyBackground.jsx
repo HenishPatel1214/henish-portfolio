@@ -11,7 +11,7 @@ const TOPO_CONFIG = {
   glow: 48, // 0..30 (can exceed for slightly stronger glow)
   lineWidth: 46, // 20..180 (x0.01 => 0.46px default)
   mouseWarp: 15, // 0..100
-  palette: 'green', // white | green | cyan | amber | magenta
+  palette: 'blue', // white | blue | cyan | amber | magenta
   cellSize: 12,
   background: '#050505',
 }
@@ -24,12 +24,12 @@ const PALETTES = {
     baseAlpha: 0.24,
     accentAlpha: 0.52,
   },
-  green: {
-    base: [100, 236, 172],
-    accent: [140, 255, 200],
-    glow: [86, 255, 180],
-    baseAlpha: 0.22,
-    accentAlpha: 0.5,
+  blue: {
+    base: [126, 159, 232],
+    accent: [178, 206, 255],
+    glow: [118, 173, 255],
+    baseAlpha: 0.23,
+    accentAlpha: 0.54,
   },
   cyan: {
     base: [120, 220, 255],

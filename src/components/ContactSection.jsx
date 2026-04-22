@@ -7,7 +7,7 @@ function ContactCard({ link }) {
 
   if (!isClickable) {
     return (
-      <article className="rounded-2xl border border-[#24936d]/55 bg-[#081a14] p-5">
+      <article className="rounded-2xl border border-[#5f84cc]/55 bg-[#0f1936] p-5">
         <p className="text-xs uppercase tracking-[0.24em] text-brand-100/90">{link.label}</p>
         <p className="mt-3 text-sm text-brand-100">{link.value}</p>
       </article>
@@ -19,7 +19,7 @@ function ContactCard({ link }) {
       href={link.href}
       target={link.href.startsWith('http') ? '_blank' : undefined}
       rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
-      className="group rounded-2xl border border-[#24936d]/55 bg-[#081a14] p-5 transition hover:-translate-y-1 hover:border-brand-300/70"
+      className="group rounded-2xl border border-[#5f84cc]/55 bg-[#0f1936] p-5 transition hover:-translate-y-1 hover:border-brand-300/70"
     >
       <p className="text-xs uppercase tracking-[0.24em] text-brand-100/90">{link.label}</p>
       <p className="mt-3 text-sm text-brand-100">{link.value}</p>
@@ -38,7 +38,7 @@ export default function ContactSection({ links, email }) {
 
   return (
     <AnimatedSection id="contact" variant="fromLeft" className="mx-auto w-full max-w-6xl px-5 pb-16 pt-16 md:px-8 md:pb-24 md:pt-24">
-      <div className="overflow-hidden rounded-3xl border border-[#1f7a59]/55 bg-gradient-to-br from-[#1a255d] via-[#121a46] to-[#0f173f] p-8 md:p-12">
+      <div className="overflow-hidden rounded-3xl border border-[#3d63a7]/55 bg-gradient-to-br from-[#1a255d] via-[#121a46] to-[#0f173f] p-8 md:p-12">
         <SectionTitle
           eyebrow="Contact"
           title="Let’s build something exceptional."
@@ -55,7 +55,7 @@ export default function ContactSection({ links, email }) {
           <div className="flex flex-wrap gap-4">
             <a
               href={emailHref}
-              className="inline-flex items-center gap-2 rounded-full border border-[#33a77e]/55 px-5 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80 hover:text-brand-50"
+              className="inline-flex items-center gap-2 rounded-full border border-[#79a1df]/55 px-5 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80 hover:text-brand-50"
             >
               <Mail size={16} />
               Email Me
@@ -65,7 +65,7 @@ export default function ContactSection({ links, email }) {
               href={resumePreviewHref}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[#33a77e]/55 bg-[#081a14] px-5 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80"
+              className="inline-flex items-center gap-2 rounded-full border border-[#79a1df]/55 bg-[#0f1936] px-5 py-3 text-sm font-semibold text-brand-50 transition hover:border-brand-300/80"
             >
               <Eye size={16} />
               Preview Resume
@@ -74,16 +74,16 @@ export default function ContactSection({ links, email }) {
             <a
               href={resumeHref}
               download="Henish_Patel_Resume.pdf"
-              className="inline-flex items-center gap-2 rounded-full bg-brand-300 px-5 py-3 text-sm font-semibold text-[#042518] transition hover:bg-brand-200"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-300 px-5 py-3 text-sm font-semibold text-[#081739] transition hover:bg-brand-200"
             >
               <Download size={16} />
               Download Resume
             </a>
           </div>
 
-          <article className="hidden rounded-2xl border border-[#24936d]/55 bg-[#081a14] p-4 lg:block">
+          <article className="hidden rounded-2xl border border-[#5f84cc]/55 bg-[#0f1936] p-4 lg:block">
             <p className="text-xs uppercase tracking-[0.24em] text-brand-100/85">Resume Preview</p>
-            <div className="mt-3 h-[22rem] overflow-hidden rounded-xl border border-[#24936d]/55 bg-[#07110d]">
+            <div className="mt-3 h-[22rem] overflow-hidden rounded-xl border border-[#5f84cc]/55 bg-[#0a1125]">
               <iframe
                 src={resumePreviewHref}
                 title="Henish Patel Resume Preview"

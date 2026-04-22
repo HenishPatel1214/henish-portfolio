@@ -53,13 +53,13 @@ export default function DailyPlaylistPick({ playlistUrl, favoriteArtist }) {
   }
 
   return (
-    <article className="relative col-span-full overflow-hidden rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft">
+    <article className="relative col-span-full overflow-hidden rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 shadow-soft">
       <div className="absolute inset-0 bg-gradient-to-br from-brand-400/16 via-[#8f79ff]/12 to-transparent" />
 
       <div className="relative">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#24936d]/55 bg-[#081a14] text-brand-100">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#5f84cc]/55 bg-[#0f1936] text-brand-100">
               <Music4 size={15} />
             </span>
             <p className="text-xs uppercase tracking-[0.24em] text-brand-100/90">Daily Playlist Shuffle</p>
@@ -69,7 +69,7 @@ export default function DailyPlaylistPick({ playlistUrl, favoriteArtist }) {
               href={playlistUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-[#24936d]/55 bg-[#081a14] px-3 py-1 text-xs text-brand-100 transition hover:border-brand-300/70 hover:text-brand-50"
+              className="rounded-full border border-[#5f84cc]/55 bg-[#0f1936] px-3 py-1 text-xs text-brand-100 transition hover:border-brand-300/70 hover:text-brand-50"
             >
               Open Playlist
             </a>
@@ -84,7 +84,7 @@ export default function DailyPlaylistPick({ playlistUrl, favoriteArtist }) {
           href={todayTrack.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 block rounded-xl border border-[#1f7a59]/55 bg-[#081a14] px-4 py-3 transition hover:border-brand-300/60"
+          className="mt-3 block rounded-xl border border-[#3d63a7]/55 bg-[#0f1936] px-4 py-3 transition hover:border-brand-300/60"
         >
           <p className="text-xs uppercase tracking-[0.18em] text-brand-100/80">Today&apos;s Song</p>
           <p className="mt-2 text-lg font-semibold text-brand-50">{todayTrack.title}</p>
@@ -98,7 +98,7 @@ export default function DailyPlaylistPick({ playlistUrl, favoriteArtist }) {
               href={track.url}
               target="_blank"
               rel="noreferrer"
-              className="rounded-lg border border-[#1f7a59]/55 bg-[#081a14] px-3 py-2 text-xs text-brand-100 transition hover:border-brand-300/50"
+              className="rounded-lg border border-[#3d63a7]/55 bg-[#0f1936] px-3 py-2 text-xs text-brand-100 transition hover:border-brand-300/50"
             >
               <p className="font-semibold text-brand-50">{track.title}</p>
               <p className="mt-1 text-brand-200/90">{track.artist}</p>

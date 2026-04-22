@@ -9,7 +9,7 @@ function ProjectCard({ project }) {
     <Motion.article
       whileHover={{ y: -8 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-      className="group h-full rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft"
+      className="group h-full rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 shadow-soft"
     >
       <div className="flex items-center justify-between gap-4">
         <p className="text-xs uppercase tracking-[0.24em] text-brand-200/80">{project.category}</p>
@@ -17,7 +17,7 @@ function ProjectCard({ project }) {
           href={project.github}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#33a77e]/55 text-brand-200/90 transition hover:border-brand-200 hover:text-brand-100"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#79a1df]/55 text-brand-200/90 transition hover:border-brand-200 hover:text-brand-100"
           aria-label={`Open ${project.title} repository`}
         >
           <ArrowUpRight size={14} />
@@ -36,7 +36,7 @@ function ProjectCard({ project }) {
         {project.stack.map((item) => (
           <span
             key={item}
-            className="rounded-full border border-[#24936d]/55 bg-[#0f2a20] px-3 py-1 text-xs text-brand-200/90"
+            className="rounded-full border border-[#5f84cc]/55 bg-[#18284f] px-3 py-1 text-xs text-brand-200/90"
           >
             {item}
           </span>
@@ -74,7 +74,7 @@ export default function ProjectsSection({ projects, filters }) {
             className={`rounded-full border px-4 py-2 text-sm transition ${
               activeFilter === filter
                 ? 'border-brand-200 bg-brand-300/20 text-brand-100'
-                : 'border-[#24936d]/55 bg-[#0f2a20] text-brand-200/90 hover:border-brand-300/70 hover:text-brand-50'
+                : 'border-[#5f84cc]/55 bg-[#18284f] text-brand-200/90 hover:border-brand-300/70 hover:text-brand-50'
             }`}
           >
             {filter}

@@ -14,7 +14,7 @@ export default function AboutSection({ highlights }) {
         {highlights.map((item) => (
           <article
             key={item.title}
-            className="rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 transition duration-300 hover:-translate-y-1 hover:border-brand-300/50 hover:bg-[#0e2c22]"
+            className="rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 transition duration-300 hover:-translate-y-1 hover:border-brand-300/50 hover:bg-[#1d3160]"
           >
             <h3 className="font-display text-lg font-semibold text-brand-50">{item.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-brand-200/90">{item.detail}</p>

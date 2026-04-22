@@ -11,20 +11,20 @@ export default function BeyondCodeSection({ identity, lifestyle, funFacts, backg
       />
 
       <div className="mt-10 grid gap-4 md:grid-cols-3">
-        <article className="rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft">
+        <article className="rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 shadow-soft">
           <p className="text-xs uppercase tracking-[0.24em] text-brand-100/80">Identity</p>
           <h3 className="mt-3 font-display text-xl font-semibold text-brand-50">{identity.name}</h3>
           <p className="mt-2 text-sm text-brand-200/90">Nickname: {identity.nickname}</p>
           <p className="mt-3 text-sm leading-relaxed text-brand-200/90">{identity.note}</p>
         </article>
 
-        <article className="rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft md:col-span-2">
+        <article className="rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 shadow-soft md:col-span-2">
           <p className="text-xs uppercase tracking-[0.24em] text-brand-100/80">Interests & Lifestyle</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {lifestyle.map((item) => (
               <span
                 key={item}
-                className="rounded-full border border-[#24936d]/55 bg-[#0f2a20] px-3 py-1 text-xs text-brand-100"
+                className="rounded-full border border-[#5f84cc]/55 bg-[#18284f] px-3 py-1 text-xs text-brand-100"
               >
                 {item}
               </span>
@@ -37,7 +37,7 @@ export default function BeyondCodeSection({ identity, lifestyle, funFacts, backg
         {funFacts.map((fact) => (
           <article
             key={fact.title}
-            className="rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 transition hover:-translate-y-1 hover:border-brand-300/50"
+            className="rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 transition hover:-translate-y-1 hover:border-brand-300/50"
           >
             <p className="text-xs uppercase tracking-[0.24em] text-brand-100/75">{fact.title}</p>
             <p className="mt-3 text-sm leading-relaxed text-brand-200/90">{fact.text}</p>
@@ -45,7 +45,7 @@ export default function BeyondCodeSection({ identity, lifestyle, funFacts, backg
         ))}
       </div>
 
-      <article className="mt-4 rounded-2xl border border-[#1f7a59]/55 bg-[#0b2018] p-6 shadow-soft">
+      <article className="mt-4 rounded-2xl border border-[#3d63a7]/55 bg-[#131f42] p-6 shadow-soft">
         <p className="text-xs uppercase tracking-[0.24em] text-brand-100/75">Background Story</p>
         <div className="mt-4 grid gap-2 md:grid-cols-2">
           {backgroundStory.map((point) => (
