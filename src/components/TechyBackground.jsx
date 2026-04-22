@@ -8,7 +8,7 @@ const TOPO_CONFIG = {
   speed: 1, // 0..200
   density: 6, // 6..36
   scale: 260, // 40..260 (pixels)
-  glow: 30, // 0..30
+  glow: 38, // 0..30 (can exceed for slightly stronger glow)
   lineWidth: 32, // 20..180 (x0.01 => 0.32px default)
   mouseWarp: 15, // 0..100
   palette: 'white', // white | green | cyan | amber | magenta
@@ -425,9 +425,9 @@ export default function TechyBackground() {
         context.strokeStyle = toRgba(color, alpha)
         context.lineWidth = isIndexLine ? baseLineWidth * 1.16 : baseLineWidth
 
-        const glowRadius = config.glow * 0.22
+        const glowRadius = config.glow * 0.27
         context.shadowBlur = isIndexLine ? glowRadius * 1.12 : glowRadius * 0.46
-        context.shadowColor = toRgba(palette.glow, isIndexLine ? 0.22 : 0.1)
+        context.shadowColor = toRgba(palette.glow, isIndexLine ? 0.3 : 0.14)
 
         traceIsoLevel(iso)
       }
