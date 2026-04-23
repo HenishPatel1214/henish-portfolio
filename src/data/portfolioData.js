@@ -65,10 +65,6 @@ export const funFacts = [
     text: 'I follow the Knicks, New York Giants, Real Madrid, and Chelsea year-round.',
   },
   {
-    title: 'Style',
-    text: 'I am into fashion in a low-key way. I like clean, simple fits without overdoing it.',
-  },
-  {
     title: 'Leadership Start',
     text: 'At Utah Military Academy, I completed JROTC and served as a Cadet Major.',
   },
