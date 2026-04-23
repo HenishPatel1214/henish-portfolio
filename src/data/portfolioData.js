@@ -11,11 +11,6 @@ export const personalInfo = {
   education: 'University of Utah — Computer Science (GPA 3.57), Data Science Minor',
 }
 
-export const musicProfile = {
-  favoriteArtist: 'Drake',
-  playlistUrl: 'https://open.spotify.com/playlist/1p66TD79OWxi6fBya2Cwxf?si=SdlNaBeDTr6rV1fAg-jAdA',
-}
-
 export const headshots = [
   {
     src: 'profile/henish-suit.jpeg',
@@ -38,7 +33,7 @@ export const personalIdentity = {
   name: 'Henish Patel',
   nickname: 'Harry',
   note:
-    'I go by Henish or Harry. I have lived in Utah for the last 10 years (and still do), while my childhood before age 12 was in New York and New Jersey.',
+    'I go by Henish or Harry. I have lived in Utah for around 10 years, and before age 12 I grew up in New York and New Jersey.',
 }
 
 export const lifestyleInterests = [
@@ -58,54 +53,48 @@ export const lifestyleInterests = [
 
 export const funFacts = [
   {
-    title: 'Game-Day Energy',
-    text: 'I regularly watch Knicks matches and football fixtures, and I enjoy breaking down strategy and momentum swings just like I do in technical systems.',
+    title: 'Nickname',
+    text: 'Most people call me Harry, even though my full name is Henish.',
   },
   {
-    title: 'On-Court Habit',
-    text: 'I play basketball as often as I can. It keeps me competitive, sharp under pressure, and focused on fundamentals.',
+    title: 'How I Reset',
+    text: 'My go-to reset is simple: gym, basketball, and time with close friends.',
   },
   {
-    title: 'Style Philosophy',
-    text: 'I am into fashion enough to care about clean fits and details, but I keep it practical and grounded.',
+    title: 'Sports I Follow',
+    text: 'I follow the Knicks, New York Giants, Real Madrid, and Chelsea year-round.',
   },
   {
-    title: 'Social + Recharge',
-    text: 'Best reset is simple: gym session, hoop run, time with friends, and planning the next trip when possible.',
+    title: 'Style',
+    text: 'I am into fashion in a low-key way. I like clean, simple fits without overdoing it.',
   },
   {
-    title: 'Leadership Background',
-    text: 'I attended Utah Military Academy, completed JROTC, and served as a Cadet Major, which strengthened my leadership and accountability mindset.',
+    title: 'Leadership Start',
+    text: 'At Utah Military Academy, I completed JROTC and served as a Cadet Major.',
   },
   {
-    title: 'Faith + Values',
-    text: 'My involvement with BAPS gave me a strong religious and cultural foundation centered on discipline, humility, service, and consistency.',
+    title: 'Faith & Values',
+    text: 'My BAPS background helped shape my discipline, humility, and service mindset.',
   },
   {
-    title: 'Music Vibe',
-    text: 'Drake is my favorite artist, and I keep a rotating playlist with Drake, The Weeknd, and related tracks as a daily focus soundtrack.',
-  },
-  {
-    title: 'Operations Perspective',
-    text: 'Through family businesses in motel and gas-station operations, including exposure to Days Inn and Best Western environments, I learned to think in terms of service reliability and real-world operations.',
+    title: 'Family Business Exposure',
+    text: 'Growing up around motel and gas-station operations taught me to care about reliability, speed, and customer experience.',
   },
 ]
 
 export const backgroundStory = [
-  'I have lived in Utah for 10 years and currently live there.',
-  'Before age 12, my childhood was in New York and New Jersey.',
-  'Utah Military Academy background with JROTC experience.',
-  'Served as a Cadet Major and led with structure and discipline.',
-  'BAPS involvement shaped my religious/cultural values and service mindset.',
-  'Family-business exposure across motel and gas-station operations.',
-  'Comfortable balancing technical work with people, process, and service quality.',
+  'I have lived in Utah for about 10 years and still live here.',
+  'Before age 12, I grew up in New York and New Jersey.',
+  'I attended Utah Military Academy and completed JROTC.',
+  'I served as a Cadet Major, which built my leadership and accountability habits.',
+  'My BAPS involvement shaped my religious and cultural foundation.',
+  'I also learned operations through family businesses in motels and gas stations, including Days Inn and Best Western environments.',
 ]
 
 export const navigation = [
   { label: 'Home', href: '#home', id: 'home' },
   { label: 'About', href: '#about', id: 'about' },
   { label: 'Beyond Code', href: '#beyond', id: 'beyond' },
-  { label: 'Team Pulse', href: '#team-pulse', id: 'team-pulse' },
   { label: 'Experience', href: '#experience', id: 'experience' },
   { label: 'Projects', href: '#projects', id: 'projects' },
   { label: 'Skills', href: '#skills', id: 'skills' },

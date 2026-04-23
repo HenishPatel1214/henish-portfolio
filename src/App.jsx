@@ -7,7 +7,6 @@ import {
   experiences,
   funFacts,
   lifestyleInterests,
-  musicProfile,
   navigation,
   personalIdentity,
   personalInfo,
@@ -20,7 +19,6 @@ import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import AboutSection from './components/AboutSection'
 import BeyondCodeSection from './components/BeyondCodeSection'
-import TeamPulseSection from './components/TeamPulseSection'
 import ExperienceSection from './components/ExperienceSection'
 import ProjectsSection from './components/ProjectsSection'
 import SkillsSection from './components/SkillsSection'
@@ -83,7 +81,6 @@ function App() {
           funFacts={funFacts}
           backgroundStory={backgroundStory}
         />
-        <TeamPulseSection musicProfile={musicProfile} />
         <ExperienceSection experiences={experiences} />
         <ProjectsSection projects={projects} filters={projectFilters} />
         <SkillsSection skills={skills} />
